@@ -1,16 +1,17 @@
 'use client';
 
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AppSidebar } from '../sidebar/AppSidebar';
 import { MinGatInterface } from '../mock/MinGatInterface';
+import { MinGatPCInterface } from '../mock/MinGatPCInterface';
+import { GuideCard } from './GuideCard'; // Assuming we reuse this for the guide content
 import { categories } from '@/data/categories';
 import { helpHierarchy } from '@/data/help-hierarchy';
-import { faqData, faqCategories, searchFAQ, FAQItem } from '@/data/faqData';
-import { BookOpen, Clock, Smartphone, Monitor, Menu, X, Search, HelpCircle, ChevronDown, ChevronRight, ArrowRight } from 'lucide-react';
+import { Guide } from '@/lib/types';
+import { BookOpen, Monitor, Smartphone } from 'lucide-react';
+import { getGuideById } from '@/data/guides'; // Need to make sure this exists or import from correct path
 import { useGuideProgress } from '@/hooks/useGuideProgress';
-import { guideContent, setGuideNavigator } from '@/lib/guides/guide-content';
-import { accessGuides } from '@/data/access-guides';
-import { gatHelpData, getAllTopicIds } from '@/data/gatHelpData';
+import { guideContent } from '@/data/guide-content';
 
 // Helper to flatten hierarchy for searching titles by ID
 const findSectionTitle = (id: string, items = helpHierarchy): string => {
@@ -84,17 +85,9 @@ const buildSearchIndex = () => {
 };
 
 export function InteractiveGuidePage() {
-  const [selectedGuideId, setSelectedGuideId] = useState<string | null>('home-access-setup');
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [showFAQ, setShowFAQ] = useState(false);
-  
-  // Ensure we always have a valid guide selected when not showing FAQ
-  const effectiveGuideId = showFAQ ? null : (selectedGuideId || 'home-access-setup');
-  const [searchQuery, setSearchQuery] = useState('');
-  const [searchResults, setSearchResults] = useState<{ id: string; title: string }[]>([]);
-  const [faqResults, setFaqResults] = useState<FAQItem[]>([]);
-  const [expandedFaqCategories, setExpandedFaqCategories] = useState<Set<string>>(new Set(['login']));
-  const [showSearchDropdown, setShowSearchDropdown] = useState(false);
+  // Default to 'mine-apper' to show the GatGo demo first, or 'mingat-hjelp' as root
+  const [selectedGuideId, setSelectedGuideId] = useState<string | null>('mine-apper');
+  const [viewMode, setViewMode] = useState<'mobile' | 'desktop'>('mobile');
   const { markAsViewed } = useGuideProgress();
 
   const searchIndex = useMemo(() => buildSearchIndex(), []);
@@ -119,8 +112,17 @@ export function InteractiveGuidePage() {
   }, [handleNavigate]);
 
   useEffect(() => {
-    if (effectiveGuideId && !showFAQ) {
-      markAsViewed(effectiveGuideId);
+    if (selectedGuideId) {
+      markAsViewed(selectedGuideId);
+
+      // Auto-switch view based on content type if possible
+      // This is a simple heuristic based on the ID or title
+      if (selectedGuideId === 'mine-apper' || selectedGuideId.includes('gatgo')) {
+        setViewMode('mobile');
+      } else {
+        // Default to desktop for most other things as MinGat is primarily a web app
+        setViewMode('desktop');
+      }
     }
   }, [effectiveGuideId, showFAQ, markAsViewed]);
 
@@ -367,79 +369,48 @@ export function InteractiveGuidePage() {
           </div>
         </div>
 
-        {/* Content */}
-        <div className="flex-1 flex overflow-hidden">
-          {/* Guide Content */}
-          <div 
-            id="guide-content-area"
-            className="w-full xl:w-1/2 overflow-y-auto bg-white xl:border-r border-gray-200 shadow-inner"
-          >
-            {showFAQ ? (
-              <FAQSection />
-            ) : (
-              <div className="p-4 sm:p-6 lg:p-8">
-                <div className="h-10 lg:hidden" />
-                
-                <div className="max-w-2xl mx-auto">
-                  {/* Header */}
-                  <div className="mb-6 pb-6 border-b border-gray-100">
-                    <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">{sectionTitle}</h1>
-                    <div className="flex flex-wrap items-center gap-3 sm:gap-4 text-sm text-gray-500">
-                      <div className="flex items-center gap-1">
-                        <BookOpen className="w-4 h-4" />
-                        <span>Veiledning</span>
-                      </div>
-                      {metadata && (
-                        <>
-                          {metadata.estimatedTime && (
-                            <div className="flex items-center gap-1">
-                              <Clock className="w-4 h-4" />
-                              <span>{metadata.estimatedTime}</span>
-                            </div>
-                          )}
-                          <div className="flex items-center gap-1">
-                            {metadata.interface === 'gatgo' ? (
-                              <Smartphone className="w-4 h-4" />
-                            ) : (
-                              <Monitor className="w-4 h-4" />
-                            )}
-                            <span>
-                              {metadata.interface === 'gatgo' ? 'GatGo' : metadata.interface === 'mingat' ? 'MinGat' : 'Alle'}
-                            </span>
-                          </div>
-                        </>
-                      )}
-                    </div>
-                  </div>
+        {/* Interactive Mock (Right) */}
+        <div className="w-1/2 bg-gray-100 flex flex-col relative border-l border-gray-200">
+            {/* View Toggle */}
+            <div className="absolute top-4 left-1/2 -translate-x-1/2 z-10 flex bg-white p-1 rounded-full shadow-lg border border-gray-200">
+              <button
+                onClick={() => setViewMode('mobile')}
+                className={`flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
+                  viewMode === 'mobile'
+                    ? 'bg-[#005077] text-white shadow-sm'
+                    : 'text-gray-600 hover:bg-gray-50'
+                }`}
+              >
+                <Smartphone className="w-4 h-4" />
+                Mobil
+              </button>
+              <button
+                onClick={() => setViewMode('desktop')}
+                className={`flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
+                  viewMode === 'desktop'
+                    ? 'bg-[#005077] text-white shadow-sm'
+                    : 'text-gray-600 hover:bg-gray-50'
+                }`}
+              >
+                <Monitor className="w-4 h-4" />
+                PC
+              </button>
+            </div>
 
-                  {/* Content */}
-                  <div className="prose prose-blue max-w-none prose-sm sm:prose-base">
-                    {activeContent ? (
-                      activeContent.content
-                    ) : (
-                      <div className="text-gray-500 py-12 text-center">
-                        <BookOpen className="w-16 h-16 mx-auto mb-4 text-gray-300" />
-                        <p className="text-lg">Innhold for <strong>{sectionTitle}</strong> er under utarbeidelse.</p>
-                        <p className="text-sm mt-2">
-                          Prøv å velge en av <strong>Hurtigstart</strong>-stegene i menyen for å se detaljert veiledning.
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* Interactive Mock - Hidden on smaller screens */}
-          <div className="hidden xl:flex w-1/2 bg-gray-50 flex-col relative">
             <div className="absolute top-4 right-4 z-10 bg-black/75 text-white px-3 py-1 rounded-full text-xs font-medium backdrop-blur-sm">
               Interaktiv Demo
             </div>
-            <div className="flex-1 p-8 flex items-center justify-center overflow-hidden">
-              <div className="w-full max-w-md aspect-[9/16] md:aspect-auto md:h-[800px] md:w-[400px] bg-white rounded-[2rem] shadow-2xl overflow-hidden border-8 border-gray-800 ring-1 ring-gray-900/5">
-                <MinGatInterface />
-              </div>
+
+            <div className="flex-1 p-8 flex items-center justify-center overflow-hidden bg-dot-pattern">
+                {viewMode === 'mobile' ? (
+                  <div className="w-full max-w-md aspect-[9/16] md:aspect-auto md:h-[800px] md:w-[400px] bg-white rounded-[2rem] shadow-2xl overflow-hidden border-8 border-gray-800 ring-1 ring-gray-900/5 transition-all duration-500 ease-in-out">
+                      <MinGatInterface />
+                  </div>
+                ) : (
+                  <div className="w-full h-full max-w-5xl max-h-[800px] bg-white rounded-lg shadow-2xl overflow-hidden border border-gray-200 ring-1 ring-black/5 transition-all duration-500 ease-in-out">
+                      <MinGatPCInterface />
+                  </div>
+                )}
             </div>
           </div>
         </div>
