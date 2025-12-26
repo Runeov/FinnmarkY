@@ -76,7 +76,7 @@ export function useSearch() {
     // Categories
     categories.forEach((cat) => {
       if (cat.nameNo.toLowerCase().includes(normalized)) {
-        list.push({ id: `cat-${cat.id}`, text: cat.nameNo, type: 'category', category: cat.id });
+        list.push({ id: `cat-${cat.id}`, text: cat.nameNo, type: 'category', category: cat.id as GuideCategory });
       }
     });
 

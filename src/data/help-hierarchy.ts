@@ -5,102 +5,135 @@ export const helpHierarchy: HelpSection[] = [
     id: 'mingat-hjelp',
     title: 'MinGat Hjelp',
     children: [
-      { id: 'innlogging', title: 'Innlogging' },
-      { id: 'startsiden', title: 'Startsiden' },
-      { id: 'min-profil', title: 'Min Profil' },
-      { id: 'e-laering', title: 'e-Læring' },
       {
-        id: 'min-kalender',
-        title: 'Min Kalender',
+        id: 'kom-i-gang',
+        title: 'Kom i gang',
         children: [
-          { id: 'eksport-til-kalender', title: 'Eksport til kalender med iCal format' }
+          { id: 'innlogging', title: 'Innlogging' },
+          { id: 'startsiden', title: 'Startsiden' },
+          { id: 'min_profil', title: 'Min Profil' },
         ]
       },
       {
-        id: 'mine-forespoersler',
-        title: 'Mine forespørsler',
+        id: 'kalender-vakter',
+        title: 'Kalender og Vakter',
         children: [
-          { id: 'jatakk-ledig-vakt', title: 'JaTakk (Ledig vakt)' },
+          { id: 'min_kalender', title: 'Min Kalender' },
+          { id: 'ical', title: 'Eksport til iCal' },
+          { id: 'vaktbok', title: 'Vaktbok' },
+          { id: 'oppgave_oversikt', title: 'Oppgaveoversikt' },
+          { id: 'ukevisning', title: 'Ukevisning' },
+          { id: 'arbeidsplaner', title: 'Arbeidsplaner' },
+        ]
+      },
+      {
+        id: 'foresporsler',
+        title: 'Forespørsler',
+        children: [
+          { id: 'mine_foresporsler', title: 'Mine forespørsler' },
+          { id: 'jatakk', title: 'JaTakk (Ledige vakter)' },
           { id: 'melding', title: 'Melding' },
-          { id: 'utrykning', title: 'Utrykning' },
-          { id: 'honorar', title: 'Honorar' },
           { id: 'fravaer', title: 'Fravær' },
-          { id: 'overtid-ekstravakt', title: 'Overtid/Ekstravakt' },
+          { id: 'overtid_ekstravakt', title: 'Overtid/Ekstravakt' },
           { id: 'vaktbytte', title: 'Vaktbytte' },
           { id: 'multibytte', title: 'Multibytte' },
-          { id: 'forskjovet-vakt', title: 'Forskjøvet vakt' },
+          { id: 'forskjovet_vakt', title: 'Forskjøvet vakt' },
+          { id: 'utrykning', title: 'Utrykning' },
+          { id: 'honorar', title: 'Honorar' },
           { id: 'tillegg', title: 'Tillegg' },
           { id: 'bank', title: 'Bank' },
           { id: 'kompetanse', title: 'Kompetanse' },
           { id: 'kjoring', title: 'Kjøring' },
           { id: 'bankveksling', title: 'Bankveksling' },
-          { id: 'fordeling-tid-penger', title: 'Fordeling tid /penger' }
+          { id: 'fordeling_tid_penger', title: 'Fordeling tid/penger' },
         ]
       },
-      { id: 'paminnelser', title: 'Påminnelser' },
-      { id: 'min-timeliste', title: 'Min Timeliste' },
       {
-        id: 'min-timeregistrering',
-        title: 'Min Timeregistrering',
+        id: 'timer-lonn',
+        title: 'Timer og Lønn',
         children: [
-          { id: 'ny-timeregistrering', title: 'Ny timeregistrering' }
+          { id: 'min_timeliste', title: 'Min Timeliste' },
+          { id: 'min_timeregistrering', title: 'Min Timeregistrering' },
+          { id: 'ny_timeregistrering', title: 'Ny timeregistrering' },
+          { id: 'min_fleksitid', title: 'Min fleksitid' },
+          { id: 'mine_lonnsslipper', title: 'Mine lønnsslipper' },
+          { id: 'min_lonnsoversikt', title: 'Min lønnsoversikt' },
         ]
       },
-      { id: 'min-fleksitid', title: 'Min fleksitid' },
-      { id: 'mine-banker', title: 'Mine banker' },
-      { id: 'min-arsarbeidstid', title: 'Min Årsarbeidstid' },
-      { id: 'mine-fravaer', title: 'Mine Fravær' },
-      { id: 'min-kompetanse', title: 'Min kompetanse' },
-      { id: 'mine-bytter', title: 'Mine bytter' },
-      { id: 'mine-faste-tillegg', title: 'Mine faste tillegg' },
-      { id: 'min-tilgjengelighet', title: 'Min tilgjengelighet' },
-      { id: 'mine-stillingsforhold', title: 'Mine stillingsforhold' },
-      { id: 'mine-lonnsslipper', title: 'Mine lønnsslipper' },
-      { id: 'min-lonnsoversikt', title: 'Min lønnsoversikt' },
-      { id: 'min-ukeplanlegging', title: 'Min ukeplanlegging' },
       {
-        id: 'min-onskeplan',
-        title: 'Min Ønskeplan',
+        id: 'banker-saldo',
+        title: 'Banker og Saldo',
         children: [
-          { id: 'onskeplan-fase-1', title: 'Ønskeplan Fase 1' },
-          { id: 'onskeplan-fase-2', title: 'Ønskeplan Fase 2' },
-          { id: 'ny-onskeplan-fase-1', title: 'Ny Ønskeplan Fase 1' },
-          { id: 'ny-onskeplan-fase-2', title: 'Ny Ønskeplan Fase 2' }
+          { id: 'mine_banker', title: 'Mine banker' },
+          { id: 'min_arsarbeidstid', title: 'Min Årsarbeidstid' },
+          { id: 'min_ferie', title: 'Min ferie' },
+          { id: 'mine_fordelinger', title: 'Mine fordelinger' },
         ]
       },
-      { id: 'sporreundersokelser', title: 'Spørreundersøkelser' },
-      { id: 'mine-forskjovne-vakter', title: 'Mine Forskjøvne vakter' },
-      { id: 'mine-fordelinger', title: 'Mine fordelinger' },
-      { id: 'min-ferie', title: 'Min ferie' },
-      { id: 'mine-apper', title: 'Mine apper' },
-      { id: 'mine-utrykninger', title: 'Mine utrykninger' },
-      { id: 'vaktbok', title: 'Vaktbok' },
-      { id: 'oppgave-oversikt', title: 'Oppgave oversikt' },
-      { id: 'ukevisning', title: 'Ukevisning' },
-      { id: 'gjoremal', title: 'Gjøremål' },
-      { id: 'arbeidsplaner', title: 'Arbeidsplaner' },
-      { id: 'navneliste', title: 'Navneliste' },
-      { id: 'rapporter', title: 'Rapporter' },
-      { id: 'vaktkodeliste', title: 'Vaktkodeliste' },
-      { id: 'send-sms', title: 'Send SMS' },
-      { id: 'listevisninger', title: 'Listevisninger' },
       {
-        id: 'personvern-datasikkerhet',
-        title: 'Personvern og datasikkerhet',
+        id: 'fravaer-section',
+        title: 'Fravær',
         children: [
-          { id: 'utskrifter', title: 'Utskrifter' }
+          { id: 'mine_fravaer', title: 'Mine Fravær' },
+          { id: 'mine_bytter', title: 'Mine bytter' },
+          { id: 'mine_forskjovne_vakter', title: 'Mine forskjøvne vakter' },
+          { id: 'mine_utrykninger', title: 'Mine Utrykninger' },
         ]
       },
-      { id: 'logging', title: 'Logging' }
-    ]
-  },
-  {
-    id: 'mingat-leder',
-    title: 'MinGat - Leder',
-    children: [
-      { id: 'leder-startsiden', title: 'Leder - Startsiden' },
-      { id: 'leder-fravaer', title: 'Leder - Fravær' },
-      { id: 'leder-vaktbok', title: 'Leder - Vaktbok' }
+      {
+        id: 'onskeplan-section',
+        title: 'Ønskeplan',
+        children: [
+          { id: 'min_onskeplan', title: 'Min Ønskeplan' },
+          { id: 'onskeplan_fase_1', title: 'Ønskeplan Fase 1' },
+          { id: 'onskeplan_fase_2', title: 'Ønskeplan Fase 2' },
+          { id: 'min_ukeplanlegging', title: 'Min ukeplanlegging' },
+        ]
+      },
+      {
+        id: 'personlig-info',
+        title: 'Personlig Info',
+        children: [
+          { id: 'min_kompetanse', title: 'Min kompetanse' },
+          { id: 'mine_faste_tillegg', title: 'Mine faste tillegg' },
+          { id: 'min_tilgjengelighet', title: 'Min tilgjengelighet' },
+          { id: 'mine_stillingsforhold', title: 'Mine stillingsforhold' },
+        ]
+      },
+      {
+        id: 'avdeling-section',
+        title: 'Avdeling',
+        children: [
+          { id: 'navneliste', title: 'Navneliste' },
+          { id: 'gjoremal', title: 'Gjøremål' },
+          { id: 'vaktkodeliste', title: 'Vaktkodeliste' },
+          { id: 'rapporter', title: 'Rapporter' },
+          { id: 'send_sms', title: 'Send SMS' },
+        ]
+      },
+      {
+        id: 'diverse',
+        title: 'Diverse',
+        children: [
+          { id: 'paminnelser', title: 'Påminnelser' },
+          { id: 'mine_apper', title: 'Mine Apper (GatGo)' },
+          { id: 'sporreundersokelser', title: 'Spørreundersøkelser' },
+          { id: 'listevisninger', title: 'Listevisninger' },
+          { id: 'personvern', title: 'Personvern' },
+          { id: 'utskrifter', title: 'Utskrifter' },
+          { id: 'logging', title: 'Logging' },
+        ]
+      },
+      {
+        id: 'leder-section',
+        title: 'MinGat Leder',
+        children: [
+          { id: 'mingat_leder', title: 'MinGat - Leder' },
+          { id: 'leder_startsiden', title: 'Leder - Startsiden' },
+          { id: 'leder_fravaer', title: 'Leder - Fravær' },
+          { id: 'leder_vaktbok', title: 'Leder - Vaktbok' },
+        ]
+      },
     ]
   }
 ];
