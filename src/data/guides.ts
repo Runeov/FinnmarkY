@@ -2,6 +2,23 @@ import { Guide } from '@/lib/types';
 
 export const guides: Guide[] = [
   {
+    id: 'simple-login',
+    title: 'Enkel innlogging',
+    titleNo: 'Enkel innlogging',
+    summary: 'Rask guide for hvordan du logger inn i MinGat',
+    summaryNo: 'Rask guide for hvordan du logger inn i MinGat',
+    keywords: ['innlogging', 'login', 'enkel', 'guide', 'passord', 'brukernavn'],
+    category: 'authentication',
+    interface: 'mingat',
+    complexity: 'basic',
+    estimatedTime: '1 minutt',
+    steps: [
+      { id: 'simple-1', title: 'Gå til nettsiden', content: 'Åpne nettleseren og gå til MinGat-adressen.' },
+      { id: 'simple-2', title: 'Skriv inn brukernavn og passord', content: 'Fyll inn ditt brukernavn og passord i feltene.' },
+      { id: 'simple-3', title: 'Trykk Logg inn', content: 'Klikk på knappen "Logg inn" for å komme til startsiden.' }
+    ]
+  },
+  {
     id: 'home-access-setup',
     title: 'Setting up Home Access (MinGat from Home)',
     titleNo: 'Sette opp tilgang hjemmefra (MinGat Hjemmefra)',
