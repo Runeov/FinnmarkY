@@ -123,22 +123,6 @@ const guideContentMap: Record<string, GuideContent> = {
                   content: renderGuideContent(accessGuides.find(g => g.id === 'home-access-setup')!) } :
                 { title: 'Innlogging', content: <p>Kunne ikke laste guide.</p> },
 
-  'innlogging': {
-    title: 'Innlogging og Tilgang',
-    content: (
-      <div>
-        <h3 className="text-xl font-semibold mb-3">Tilgang til MinGat</h3>
-        <p className="mb-4">
-          Tilgang til MinGat styres av strenge sikkerhetsprotokoller for å beskytte sensitive personopplysninger.
-          Innloggingsmetoden avhenger av om du sitter på sykehusets nettverk eller hjemme.
-        </p>
-
-        <h4 className="text-lg font-medium mb-2">Intern Tilgang (På jobb)</h4>
-        <p className="mb-4">
-          Når du er koblet til Helse Nords interne nettverk (via arbeidsstasjon), bruker du <strong>Single Sign-On (SSO)</strong>.
-          Dette betyr at du logger inn med dine vanlige brukerinitialer og passord (samme som til PC-en).
-        </p>
-
   'startsiden': {
     title: 'Startsiden og Dashbord',
     content: (
@@ -170,15 +154,6 @@ const guideContentMap: Record<string, GuideContent> = {
                 { title: accessGuides.find(g => g.id === 'gatgo-mobile-setup')!.titleNo,
                   content: renderGuideContent(accessGuides.find(g => g.id === 'gatgo-mobile-setup')!) } :
                 { title: 'Mobil App (GatGo)', content: <p>Kunne ikke laste guide.</p> },
-
-  'mine-apper': {
-    title: 'Mobil App (GatGo)',
-    content: (
-      <div>
-        <p className="mb-4">
-          GatGo er mobilappen som lar deg sjekke vakter, bytte vakter og se meldinger direkte på mobilen.
-          For å ta den i bruk må du koble ("pare") telefonen din med din MinGat-bruker.
-        </p>
 
   'min-timeliste': {
     title: 'Min Timeliste og Lønn',
