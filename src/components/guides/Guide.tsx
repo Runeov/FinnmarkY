@@ -307,8 +307,8 @@ interface ImagePlaceholderProps {
 }
 
 function ImagePlaceholder({ filename, stepTitle }: ImagePlaceholderProps) {
-  // Check if it's a URL (starts with http) or a placeholder filename
-  const isUrl = filename.startsWith('http');
+  // Check if it's a URL (starts with http) or a local path (starts with /)
+  const isUrl = filename.startsWith('http') || filename.startsWith('/');
   
   if (isUrl) {
     return (
