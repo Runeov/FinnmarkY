@@ -17,7 +17,7 @@ export const guides: Guide[] = [
       { 
         id: 'simple-2', 
         title: 'Skriv inn brukernavn og passord', 
-        content: 'Fyll inn ditt brukernavn og passord i feltene.', 
+        content: 'Fyll inn ditt brukernavn og passord i feltene.',
         image: '/images/guides/login-screen.png'
       },
       { id: 'simple-3', title: 'Trykk Logg inn', content: 'Klikk på knappen "Logg inn" for å komme til startsiden.' }
@@ -64,7 +64,7 @@ export const guides: Guide[] = [
       { 
         id: 'login-3', 
         title: 'Vent på SMS-kode', 
-        content: 'Systemet sender automatisk en verifiseringskode til din registrerte mobiltelefon. Sørg for at du har godtatt SMS i din profil.', 
+        content: 'Systemet sender automatisk en verifiseringskode til din registrerte mobiltelefon. Sjekk at "Godta SMS" er slått på i profilen din.', 
         image: '/images/guides/profile-sms-toggle.png',
         callout: { type: 'info', title: 'Ingen SMS?', content: 'Vent 2 minutter. Kontakt 07022 hvis du fortsatt ikke får SMS' } 
       },
