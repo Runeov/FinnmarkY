@@ -1,6 +1,8 @@
+'use client';
+
 import React from 'react';
-import { accessGuides } from './access-guides';
-import { Guide } from '@/lib/types';
+import { accessGuides } from '../lib/guides/accessGuides';
+import type { Guide } from '../lib/types';
 import { ExternalLink, Smartphone, AlertTriangle, CheckCircle, Info, ChevronRight, HelpCircle } from 'lucide-react';
 
 export interface GuideContent {
@@ -9,7 +11,7 @@ export interface GuideContent {
 }
 
 // Helper to render a structured Guide object as React content
-const renderGuideContent = (guide: Guide) => {
+const renderGuideContent = (guide: Guide): React.ReactNode => {
   return (
     <div className="space-y-8">
       <div className="bg-blue-50 border border-blue-100 rounded-xl p-6">
@@ -20,10 +22,12 @@ const renderGuideContent = (guide: Guide) => {
             <Info className="w-4 h-4" />
             Vanskelighetsgrad: {guide.complexity === 'basic' ? 'Enkel' : guide.complexity === 'intermediate' ? 'Middels' : 'Avansert'}
           </span>
-          <span className="flex items-center gap-1">
-            <CheckCircle className="w-4 h-4" />
-            Tid: {guide.estimatedTime}
-          </span>
+          {guide.estimatedTime && (
+            <span className="flex items-center gap-1">
+              <CheckCircle className="w-4 h-4" />
+              Tid: {guide.estimatedTime}
+            </span>
+          )}
         </div>
       </div>
 
@@ -53,10 +57,12 @@ const renderGuideContent = (guide: Guide) => {
               <div className={`
                 p-4 rounded-lg border mb-6 flex items-start gap-3
                 ${step.callout.type === 'warning' ? 'bg-amber-50 border-amber-200 text-amber-900' :
+                  step.callout.type === 'error' ? 'bg-red-50 border-red-200 text-red-900' :
                   step.callout.type === 'success' ? 'bg-green-50 border-green-200 text-green-900' :
                   'bg-blue-50 border-blue-200 text-blue-900'}
               `}>
                 {step.callout.type === 'warning' ? <AlertTriangle className="w-5 h-5 flex-shrink-0" /> :
+                 step.callout.type === 'error' ? <AlertTriangle className="w-5 h-5 flex-shrink-0" /> :
                  step.callout.type === 'success' ? <CheckCircle className="w-5 h-5 flex-shrink-0" /> :
                  <Info className="w-5 h-5 flex-shrink-0" />}
                 <div>
@@ -95,6 +101,16 @@ const renderGuideContent = (guide: Guide) => {
   );
 };
 
+// Helper function to safely get guide content
+const getGuideContent = (guideId: string): GuideContent | null => {
+  const guide = accessGuides.find(g => g.id === guideId);
+  if (!guide) return null;
+  return {
+    title: guide.titleNo,
+    content: renderGuideContent(guide)
+  };
+};
+
 // Map guides to content record
 const guideContentMap: Record<string, GuideContent> = {
   'mingat-hjelp': {
@@ -118,11 +134,6 @@ const guideContentMap: Record<string, GuideContent> = {
       </div>
     )
   },
-  'innlogging': renderGuideContent(accessGuides.find(g => g.id === 'home-access-setup')!) ?
-                { title: accessGuides.find(g => g.id === 'home-access-setup')!.titleNo,
-                  content: renderGuideContent(accessGuides.find(g => g.id === 'home-access-setup')!) } :
-                { title: 'Innlogging', content: <p>Kunne ikke laste guide.</p> },
-
   'startsiden': {
     title: 'Startsiden og Dashbord',
     content: (
@@ -150,11 +161,6 @@ const guideContentMap: Record<string, GuideContent> = {
       </div>
     )
   },
-  'mine-apper': renderGuideContent(accessGuides.find(g => g.id === 'gatgo-mobile-setup')!) ?
-                { title: accessGuides.find(g => g.id === 'gatgo-mobile-setup')!.titleNo,
-                  content: renderGuideContent(accessGuides.find(g => g.id === 'gatgo-mobile-setup')!) } :
-                { title: 'Mobil App (GatGo)', content: <p>Kunne ikke laste guide.</p> },
-
   'min-timeliste': {
     title: 'Min Timeliste og Lønn',
     content: (
@@ -284,16 +290,22 @@ const guideContentMap: Record<string, GuideContent> = {
   }
 };
 
-// Add mapped content for specific IDs that should use the full guide renderer
-// We also map the English IDs to ensure they work if selected directly
-guideContentMap['home-access-setup'] = guideContentMap['innlogging'];
-guideContentMap['gatgo-mobile-setup'] = guideContentMap['mine-apper'];
+// Add access guides dynamically
+const homeAccessGuide = getGuideContent('home-access-setup');
+if (homeAccessGuide) {
+  guideContentMap['innlogging'] = homeAccessGuide;
+  guideContentMap['home-access-setup'] = homeAccessGuide;
+}
 
-// For the third guide (Two-Factor), we can add it as well, or map it to a sub-section of login
-// Let's add it as a standalone item just in case
-guideContentMap['two-factor-login'] = renderGuideContent(accessGuides.find(g => g.id === 'two-factor-login')!) ?
-    { title: accessGuides.find(g => g.id === 'two-factor-login')!.titleNo,
-      content: renderGuideContent(accessGuides.find(g => g.id === 'two-factor-login')!) } :
-    { title: 'Tofaktor Pålogging', content: <p>Kunne ikke laste guide.</p> };
+const gatgoGuide = getGuideContent('gatgo-mobile-setup');
+if (gatgoGuide) {
+  guideContentMap['mine-apper'] = gatgoGuide;
+  guideContentMap['gatgo-mobile-setup'] = gatgoGuide;
+}
+
+const twoFactorGuide = getGuideContent('two-factor-login');
+if (twoFactorGuide) {
+  guideContentMap['two-factor-login'] = twoFactorGuide;
+}
 
 export const guideContent = guideContentMap;

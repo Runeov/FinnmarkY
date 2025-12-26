@@ -11,7 +11,7 @@ import {
   Lightbulb
 } from 'lucide-react';
 import { PaaloggingGuide } from './PaaloggingGuide';
-import { accessGuides, getAccessGuideById } from '../../lib/guides/accessGuides';
+import { accessGuides, getAccessGuideById } from '@/lib/guides/accessGuides';
 import type { Guide } from '@/lib/types';
 
 interface PaaloggingContainerProps {
