@@ -97,7 +97,6 @@ const renderGuideContent = (guide: Guide) => {
 
 // Map guides to content record
 const guideContentMap: Record<string, GuideContent> = {
-export const guideContent: Record<string, GuideContent> = {
   'mingat-hjelp': {
     title: 'MinGat Hjelp',
     content: (
@@ -124,43 +123,6 @@ export const guideContent: Record<string, GuideContent> = {
                   content: renderGuideContent(accessGuides.find(g => g.id === 'home-access-setup')!) } :
                 { title: 'Innlogging', content: <p>Kunne ikke laste guide.</p> },
 
-  'innlogging': {
-    title: 'Innlogging og Tilgang',
-    content: (
-      <div>
-        <h3 className="text-xl font-semibold mb-3">Tilgang til MinGat</h3>
-        <p className="mb-4">
-          Tilgang til MinGat styres av strenge sikkerhetsprotokoller for å beskytte sensitive personopplysninger.
-          Innloggingsmetoden avhenger av om du sitter på sykehusets nettverk eller hjemme.
-        </p>
-
-        <h4 className="text-lg font-medium mb-2">Intern Tilgang (På jobb)</h4>
-        <p className="mb-4">
-          Når du er koblet til Helse Nords interne nettverk (via arbeidsstasjon), bruker du <strong>Single Sign-On (SSO)</strong>.
-          Dette betyr at du logger inn med dine vanlige brukerinitialer og passord (samme som til PC-en).
-        </p>
-
-        <h4 className="text-lg font-medium mb-2">Ekstern Tilgang (Hjemmefra)</h4>
-        <p className="mb-4">
-          For å logge inn hjemmefra (MinGat Home) kreves tofaktorautentisering:
-        </p>
-        <ol className="list-decimal pl-5 space-y-2 mb-6">
-          <li>Gå til <a href="#" className="text-blue-600 hover:underline">https://mingat.helsenord.no</a></li>
-          <li>Skriv inn ditt brukernavn og passord.</li>
-          <li>Du mottar en engangskode (OTP) på SMS.</li>
-          <li>Skriv inn koden for å fullføre innloggingen.</li>
-        </ol>
-
-        <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4">
-          <p className="font-bold text-yellow-800">Feilsøking:</p>
-          <p className="text-sm text-yellow-700">
-            Får du ikke SMS? Sjekk at mobilnummeret ditt er riktig registrert i personalkatalogen (intern telefonkatalog).
-            Hvis du har byttet nummer, må dette oppdateres mens du er på jobbnettverket for å unngå å bli låst ute hjemmefra.
-          </p>
-        </div>
-      </div>
-    )
-  },
   'startsiden': {
     title: 'Startsiden og Dashbord',
     content: (
@@ -193,39 +155,6 @@ export const guideContent: Record<string, GuideContent> = {
                   content: renderGuideContent(accessGuides.find(g => g.id === 'gatgo-mobile-setup')!) } :
                 { title: 'Mobil App (GatGo)', content: <p>Kunne ikke laste guide.</p> },
 
-  'mine-apper': {
-    title: 'Mobil App (GatGo)',
-    content: (
-      <div>
-        <p className="mb-4">
-          GatGo er mobilappen som lar deg sjekke vakter, bytte vakter og se meldinger direkte på mobilen.
-          For å ta den i bruk må du koble ("pare") telefonen din med din MinGat-bruker.
-        </p>
-
-        <h4 className="text-lg font-medium mb-2">Slik kommer du i gang</h4>
-        <ol className="list-decimal pl-5 space-y-4 mb-6">
-          <li>
-            <strong>Last ned appen:</strong> Søk etter "GatGo" i App Store (iPhone) eller Google Play (Android).
-          </li>
-          <li>
-            <strong>Generer kode i MinGat:</strong>
-            <ul className="list-disc pl-5 mt-2 text-sm text-gray-600">
-              <li>Logg inn på MinGat på en PC.</li>
-              <li>Gå til widgeten eller menyen "Mine apper".</li>
-              <li>Klikk på "Vis oppsettkode" eller "Ny enhet".</li>
-            </ul>
-          </li>
-          <li>
-            <strong>Skann koden:</strong> Åpne GatGo-appen på telefonen og velg "Skann QR-kode". Rett kameraet mot skjermen.
-          </li>
-        </ol>
-
-        <div className="bg-blue-50 p-4 rounded-lg border border-blue-100 text-blue-800">
-          <strong>Tips:</strong> Prøv vår interaktive demo til høyre! Klikk på "Mobil app" boksen i demomiljøet for å se hvordan QR-koden ser ut.
-        </div>
-      </div>
-    )
-  },
   'min-timeliste': {
     title: 'Min Timeliste og Lønn',
     content: (
