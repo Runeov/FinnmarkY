@@ -15,7 +15,6 @@ import {
   ImageIcon,
   BookOpen,
   ArrowRight,
-  ExternalLink,
 } from 'lucide-react';
 import { Guide, GuideStep, FAQItem } from '@/lib/types';
 import { getCategoryById } from '@/data/categories';
@@ -307,7 +306,8 @@ interface ImagePlaceholderProps {
 }
 
 function ImagePlaceholder({ filename, stepTitle }: ImagePlaceholderProps) {
-  // Check if it's a URL (starts with http) or a local path (starts with /)
+  // === THIS IS THE FIX YOU NEED ===
+  // We now check if the filename starts with '/' (local file) OR 'http' (external URL)
   const isUrl = filename.startsWith('http') || filename.startsWith('/');
   
   if (isUrl) {
@@ -372,9 +372,5 @@ function FAQItemComponent({ item, isOpen, onToggle }: FAQItemComponentProps) {
     </div>
   );
 }
-
-// ============================================
-// Export as default
-// ============================================
 
 export default GuideComponent;
