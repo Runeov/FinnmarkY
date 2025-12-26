@@ -306,9 +306,8 @@ interface ImagePlaceholderProps {
 }
 
 function ImagePlaceholder({ filename, stepTitle }: ImagePlaceholderProps) {
-  // DEBUGGING: Check the console to see what filename is being passed
-  console.log('Rendering Image:', filename); 
-
+  // === THIS IS THE FIX YOU NEED ===
+  // We now check if the filename starts with '/' (local file) OR 'http' (external URL)
   const isUrl = filename.startsWith('http') || filename.startsWith('/');
   
   if (isUrl) {
