@@ -639,7 +639,7 @@ Viser din timeliste.
 Som standard vises en oversikt over registreringer som skal gi lønnsutbetaling, og som ennå ikke er utbetalt.
 Viser registreringer en måned frem i tid.
 Årsakskoden vises med grå skrift på linje 2 i hver celle under timelistetype.
-Du kan se på detaljer om hver registrering ved å klikke på linken ”Timelistetype” til venstre på hver linje.
+Du kan se på detaljer om hver registrering ved å klikke på linken "Timelistetype" til venstre på hver linje.
 
 Vis alle: Viser alle registreringer. Grå skrift betyr at vaktene er overført til lønn.
 Vis med detaljer: Viser også konteringsinformasjon, antall timer, konto, avdeling, etc).
@@ -694,7 +694,7 @@ Dersom du har fått en oppgave som er satt opp med grunnlag for timeregistrering
         content: `
 Ny timeregistrering
 
-Når du klikker på ’Ny’, åpnes vinduet for å registrere timer i MinGat.
+Når du klikker på 'Ny', åpnes vinduet for å registrere timer i MinGat.
 
 Dato: Velg dato som registreringen skal gjelde for.
 Mal: Viser maler i henhold til hva som er definert på prosjektet. Kan brukes for hurtigregistrering.
@@ -708,7 +708,7 @@ Når prosjekt og aktivitet er valgt vises beskrivelse. Arbeidsinformasjon viser 
 
 Forespørselskladd:
 Gjør det mulig for deg å registrere overtid/merarbeid sammen med timeregistreringen.
-Dette gjøres ved at du oppretter en ‘forespørselkladd’ om overtid/merarbeid. Denne blir ikke en reell forespørsel (i dashboard) før timeregistreringen er endelig godkjent.
+Dette gjøres ved at du oppretter en 'forespørselkladd' om overtid/merarbeid. Denne blir ikke en reell forespørsel (i dashboard) før timeregistreringen er endelig godkjent.
         `
       },
       {
@@ -717,7 +717,7 @@ Dette gjøres ved at du oppretter en ‘forespørselkladd’ om overtid/merarbei
         content: `
 Ansatt - Fleksitid
 
-Har du fleksitidsavtale i Gat, vil få et eget menypunkt i MinGat som heter ”Min fleksitid”.
+Har du fleksitidsavtale i Gat, vil få et eget menypunkt i MinGat som heter "Min fleksitid".
 Her vil du kunne stemple inn og ut, se/redigere og søke i dine stemplinger.
 
 Stemple inn/ut:
@@ -801,7 +801,7 @@ Listen viser hvilke fraværskoder som er registrert, datoperiode, statistikkdage
 
 Signere fravær og levere fraværsdokumentasjon via MinGat:
 Det er mulig å signere fravær og/eller levere fraværsdokumentasjon via MinGat.
-Ved å klikke på linken ”Signer og dokumenter” (eller "Signer") åpnes en side for elektronisk levering/signering.
+Ved å klikke på linken "Signer og dokumenter" (eller "Signer") åpnes en side for elektronisk levering/signering.
 Etter at dokumentasjonen er levert vil du se at fraværet er signert.
         `
       },
@@ -993,7 +993,7 @@ Overdekket vakt (blått +): Dager med for mange ansatte. Klikk på pluss-tegnet 
 Underdekket vakt (rødt -): Dager med for få ansatte. Klikk på minus-tegnet for å se vaktkoder du kan sette inn og poeng du kan tjene.
 
 Ferdigstille ønsker:
-Når du har gjort de justeringene du ønsker, kryss av for ”Jeg anser meg ferdig med fase 2” og lagre.
+Når du har gjort de justeringene du ønsker, kryss av for "Jeg anser meg ferdig med fase 2" og lagre.
         `
       },
       {
@@ -1087,7 +1087,7 @@ Vis gjøremål: Vise gjøremål på avdelingen.
         content: `
 Oppgaveoversikt
 
-Vaktboka vist ”oppgaveorientert”.
+Vaktboka vist "oppgaveorientert".
 Som standard vises vaktboka med oppgaver nedover og datoer bortover.
 Kan endres i "innstillinger".
 
@@ -1272,3 +1272,27 @@ Registrere avvik: Mulighet til å registrere fravær, ekstra og dekke opp vakter
     ]
   }
 ];
+
+// Helper function to find a topic by ID (searches recursively)
+export const findHelpTopicById = (id: string, topics: HelpTopic[] = gatHelpData): HelpTopic | undefined => {
+  for (const topic of topics) {
+    if (topic.id === id) return topic;
+    if (topic.subTopics) {
+      const found = findHelpTopicById(id, topic.subTopics);
+      if (found) return found;
+    }
+  }
+  return undefined;
+};
+
+// Get all topic IDs as a flat list
+export const getAllTopicIds = (topics: HelpTopic[] = gatHelpData): string[] => {
+  const ids: string[] = [];
+  for (const topic of topics) {
+    ids.push(topic.id);
+    if (topic.subTopics) {
+      ids.push(...getAllTopicIds(topic.subTopics));
+    }
+  }
+  return ids;
+};

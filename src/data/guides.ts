@@ -14,7 +14,12 @@ export const guides: Guide[] = [
     estimatedTime: '1 minutt',
     steps: [
       { id: 'simple-1', title: 'Gå til nettsiden', content: 'Åpne nettleseren og gå til MinGat-adressen.' },
-      { id: 'simple-2', title: 'Skriv inn brukernavn og passord', content: 'Fyll inn ditt brukernavn og passord i feltene.' },
+      { 
+        id: 'simple-2', 
+        title: 'Skriv inn brukernavn og passord', 
+        content: 'Fyll inn ditt brukernavn og passord i feltene.', 
+        image: '/images/guides/login-screen.png'
+      },
       { id: 'simple-3', title: 'Trykk Logg inn', content: 'Klikk på knappen "Logg inn" for å komme til startsiden.' }
     ]
   },
@@ -56,7 +61,13 @@ export const guides: Guide[] = [
     steps: [
       { id: 'login-1', title: 'Gå til ekstern URL', content: 'Åpne https://mingat.helsenord.no i nettleseren.', callout: { type: 'warning', title: 'Viktig URL', content: 'Bruk kun den eksterne adressen - IKKE interne snarveier' } },
       { id: 'login-2', title: 'Skriv inn legitimasjon', content: 'Skriv inn ditt Helse Nord brukernavn og passord.', subSteps: ['Brukernavn: Ditt vanlige Helse Nord brukernavn', 'Passord: Ditt nettverkspassord'] },
-      { id: 'login-3', title: 'Vent på SMS-kode', content: 'Systemet sender automatisk en verifiseringskode til din registrerte mobiltelefon.', callout: { type: 'info', title: 'Ingen SMS?', content: 'Vent 2 minutter. Kontakt 07022 hvis du fortsatt ikke får SMS' } },
+      { 
+        id: 'login-3', 
+        title: 'Vent på SMS-kode', 
+        content: 'Systemet sender automatisk en verifiseringskode til din registrerte mobiltelefon. Sørg for at du har godtatt SMS i din profil.', 
+        image: '/images/guides/profile-sms-toggle.png',
+        callout: { type: 'info', title: 'Ingen SMS?', content: 'Vent 2 minutter. Kontakt 07022 hvis du fortsatt ikke får SMS' } 
+      },
       { id: 'login-4', title: 'Skriv inn SMS-koden', content: 'Skriv inn den 6-sifrede koden nøyaktig som mottatt.' },
       { id: 'login-5', title: 'Velg Finnmarkssykehuset', content: 'Velg ditt foretak fra dropdown-listen.', callout: { type: 'success', title: 'Innlogget!', content: 'Du er nå sikret innlogget i MinGat' } }
     ],
@@ -120,7 +131,8 @@ export const additionalGuides: Guide[] = [
         id: 'fp-2', 
         title: 'Bruk "Glemt passord"-funksjonen', 
         content: 'På innloggingsskjermen (når du er på jobb), klikk på lenken "Glemt passord".',
-        subSteps: ['Følg instruksjonene på skjermen', 'Du trenger ofte din ansatt-ID eller fødselsnummer'] 
+        subSteps: ['Følg instruksjonene på skjermen', 'Du trenger ofte din ansatt-ID eller fødselsnummer'],
+        image: '/images/guides/forgot-password.png'
       },
       { 
         id: 'fp-3', 
@@ -152,7 +164,8 @@ export const additionalGuides: Guide[] = [
         id: 'ja-1', 
         title: 'Finn ledige vakter', 
         content: 'Gå til "Ledige vakter" i menyen (MinGat) eller appen (GatGo).',
-        subSteps: ['Se etter røde vaktsymboler', 'Sjekk dato og klokkeslett nøye']
+        subSteps: ['Se etter røde vaktsymboler', 'Sjekk dato og klokkeslett nøye'],
+        image: '/images/guides/new-request-menu.png'
       },
       { 
         id: 'ja-2', 
@@ -239,7 +252,8 @@ export const additionalGuides: Guide[] = [
         id: 'sign-3', 
         title: 'Signer vakt', 
         content: 'I GatGo: Trykk på vakten og velg "Signer". En grønn hake vil vises.',
-        subSteps: ['Sveip til høyre på vakten i GatGo for hurtigsignering', 'På PC: Marker rader og klikk "Signer valgte"']
+        subSteps: ['Sveip til høyre på vakten i GatGo for hurtigsignering', 'På PC: Marker rader og klikk "Signer valgte"'],
+        image: '/images/guides/timesheet-signing.png'
       },
       { 
         id: 'sign-4', 
@@ -306,7 +320,8 @@ export const additionalGuides: Guide[] = [
           'I dag og i morgen: Din timeplan for de neste 48 timene',
           'Påminnelser: Røde varsler om ting du må gjøre (f.eks. signere timer)',
           'Mine apper: Snarvei til GatGo-oppsett'
-        ]
+        ],
+        image: '/images/guides/dashboard-overview.png'
       },
       { 
         id: 'nav-2', 
@@ -316,13 +331,15 @@ export const additionalGuides: Guide[] = [
           'Kalender: Hele din turnusplan',
           'Forespørsler: Status på ferieønsker og bytter',
           'Timeliste: For lønnskontroll'
-        ]
+        ],
+        image: '/images/guides/main-menu-icons.png'
       },
       { 
         id: 'nav-3', 
         title: 'Avdelingsvelger (Topp)', 
         content: 'Jobber du flere steder? Sjekk nedtrekksmenyen øverst.',
-        callout: { type: 'warning', title: 'Ser du feil vaktbok?', content: 'Husk å bytte avdeling øverst hvis du jobber på tvers av poster (f.eks. Kirurgi vs Akuttmottak).' }
+        callout: { type: 'warning', title: 'Ser du feil vaktbok?', content: 'Husk å bytte avdeling øverst hvis du jobber på tvers av poster (f.eks. Kirurgi vs Akuttmottak).' },
+        image: '/images/guides/department-switcher.png'
       }
     ]
   },
