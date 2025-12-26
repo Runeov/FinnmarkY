@@ -95,10 +95,10 @@ export function AppSidebar({ onSelectGuide, selectedGuideId }: AppSidebarProps) 
   const bonusCompleted = isViewed(bonusGuide.id);
 
   return (
-    <div className="w-80 h-screen bg-white border-r border-gray-200 overflow-y-auto flex-shrink-0">
+    <div className="w-[85vw] sm:w-80 h-screen bg-white border-r border-gray-200 overflow-y-auto flex-shrink-0">
       {/* Header */}
       <div className="p-4 border-b border-gray-100 sticky top-0 bg-white z-10">
-        <h2 className="font-semibold text-gray-900 flex items-center gap-2">
+        <h2 className="font-semibold text-gray-900 flex items-center gap-2 pr-8 lg:pr-0">
           <BookOpen className="w-5 h-5 text-blue-600" />
           MinGat Veileder
         </h2>

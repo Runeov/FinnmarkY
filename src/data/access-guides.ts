@@ -776,6 +776,639 @@ export const accessGuides: Guide[] = [
         answer: 'Helse Nord IKT / Finnmarkssykehuset: 07022 | Helse Vest IKT: 55 97 65 40 | Sykehuspartner (Helse Sør-Øst): Via BAT-systemet på intranett.'
       }
     ]
+  },
+
+  // ============================================
+  // GUIDE 5: SHIFT MANAGEMENT (VAKTPLANLEGGING)
+  // ============================================
+  {
+    id: 'shift-management',
+    title: 'Shift Management',
+    titleNo: 'Vaktplanlegging',
+    summary: 'How to manage shifts, use JaTakk, and swap shifts with colleagues',
+    summaryNo: 'Hvordan håndtere vakter, bruke JaTakk og bytte vakter med kollegaer',
+    keywords: ['vakt', 'jatakk', 'bytte', 'ledig', 'ekstravakt', 'turnus', 'plan', 'ønske'],
+    category: 'shift-management',
+    interface: 'all',
+    complexity: 'basic',
+    estimatedTime: '5-10 minutter',
+    steps: [
+      {
+        id: 'shift-overview',
+        title: 'Oversikt over vaktplanlegging',
+        content: 'MinGat og GatGo gir deg full oversikt over dine vakter og mulighet til å påvirke din egen turnus gjennom flere funksjoner.',
+        callout: {
+          type: 'info',
+          title: 'Tilgjengelig i begge systemer',
+          content: 'Vaktplanlegging kan gjøres både i MinGat (PC) og GatGo (mobil). Funksjonaliteten er den samme.'
+        }
+      },
+      {
+        id: 'jatakk-intro',
+        title: 'JaTakk - Meld interesse for ledige vakter',
+        content: 'JaTakk er funksjonen for å melde interesse for ledige vakter. Når det er hull i bemanningen, kan du se disse som ledige vakter og melde deg.',
+        subSteps: [
+          'Gå til "Ledige vakter" i menyen (MinGat) eller på startsiden (GatGo)',
+          'Se etter røde vaktsymboler som indikerer ubesatte vakter',
+          'Klikk på vakten og velg "JaTakk" for å melde din interesse',
+          'Avvent tilbakemelding - leder fordeler basert på kompetanse og kostnad'
+        ],
+        callout: {
+          type: 'warning',
+          title: 'JaTakk er et ønske',
+          content: 'Å trykke JaTakk betyr ikke at du har fått vakten. Du melder kun interesse. Leder bestemmer hvem som får vakten.'
+        }
+      },
+      {
+        id: 'shift-swap',
+        title: 'Bytte vakt med kollega',
+        content: 'Du kan bytte vakter med kollegaer direkte i systemet, men vær oppmerksom på at GAT kontrollerer at byttet overholder arbeidsmiljøloven.',
+        subSteps: [
+          'Gå til din kalender og klikk på vakten du vil bytte bort',
+          'Velg "Gi bort vakt" (kollegaen får timene) eller "Bytte vakt" (dere bytter likt mot likt)',
+          'Søk opp kollegaen du har avtalt med',
+          'Kollegaen må godkjenne, deretter må leder godkjenne endelig'
+        ],
+        callout: {
+          type: 'error',
+          title: 'Automatiske sperrer',
+          content: 'GAT vil nekte byttet hvis det bryter med 11-timers hviletid mellom vakter eller gir for mange timer den uken.'
+        }
+      },
+      {
+        id: 'shift-calendar',
+        title: 'Se din vaktplan',
+        content: 'Din komplette vaktplan finner du i kalenderen. Her ser du alle planlagte vakter, godkjente bytter og fravær.',
+        subSteps: [
+          'MinGat: Klikk "Min kalender" i venstremenyen',
+          'GatGo: Kalenderen vises på startsiden, sveip for å se flere dager',
+          'Fargekoder viser vakttype (dag, kveld, natt, ferie, fravær)'
+        ]
+      }
+    ],
+    relatedGuides: ['gatgo-mobile-setup', 'two-factor-login'],
+    faq: [
+      {
+        question: 'Hvorfor får jeg feilmelding når jeg prøver å bytte vakt?',
+        answer: 'Mest sannsynlig bryter byttet med Arbeidsmiljøloven, for eksempel for kort hviletid mellom vakter (minimum 11 timer) eller for mange timer den uken.'
+      },
+      {
+        question: 'Kan jeg bytte en dagvakt mot en nattevakt?',
+        answer: 'Ja, så lenge kompetansekravene er oppfylt og det ikke bryter hviletidsbestemmelsene.'
+      },
+      {
+        question: 'Hvordan vet jeg om jeg har fått en JaTakk-vakt?',
+        answer: 'Du får beskjed via SMS eller e-post når leder har tildelt vakten. I GatGo vises en tommel opp på vakter du har ønsket deg.'
+      },
+      {
+        question: 'Kan jeg trekke tilbake et JaTakk-ønske?',
+        answer: 'Ja, så lenge vakten ikke er tildelt. Gå til vakten og velg "Fjern JaTakk".'
+      }
+    ]
+  },
+
+  // ============================================
+  // GUIDE 6: TIME TRACKING (TIMEREGISTRERING)
+  // ============================================
+  {
+    id: 'time-tracking',
+    title: 'Time Tracking',
+    titleNo: 'Timeregistrering',
+    summary: 'How to check and sign timesheets for correct pay',
+    summaryNo: 'Hvordan kontrollere og signere timelister for korrekt lønn',
+    keywords: ['time', 'timeliste', 'signere', 'lønn', 'overtid', 'tillegg', 'godkjenne', 'stempling'],
+    category: 'time-tracking',
+    interface: 'all',
+    complexity: 'basic',
+    estimatedTime: '5 minutter',
+    steps: [
+      {
+        id: 'timesheet-overview',
+        title: 'Om timeregistrering',
+        content: 'Timelisten i GAT danner grunnlaget for utbetaling av variabel lønn som overtid, tillegg og ekstravakter. Du må selv kontrollere og signere dine timer.',
+        callout: {
+          type: 'warning',
+          title: 'Din kontroll er viktig',
+          content: 'Feil i timelisten kan føre til feil lønn. Sjekk alltid at klokkeslett og koder stemmer før du signerer.'
+        }
+      },
+      {
+        id: 'view-timesheet',
+        title: 'Se din timeliste',
+        content: 'Åpne timelisten for å se vakter med variabel lønn.',
+        subSteps: [
+          'MinGat: Klikk "Timeliste" i venstremenyen',
+          'GatGo: Gå til "Timeliste" fra hovedmenyen',
+          'Velg riktig periode (uke/måned) for å se aktuelle timer'
+        ]
+      },
+      {
+        id: 'check-codes',
+        title: 'Kontroller lønnskoder',
+        content: 'Hver vaktlinje har koder som bestemmer tillegg. Sjekk at disse stemmer med hva du faktisk jobbet.',
+        subSteps: [
+          'Kode 1411/1420: Kveldstillegg (etter kl. 17:00)',
+          'Kode 1405: Helgetillegg (lørdag/søndag)',
+          'Kode 2162: Overtid 100% (helg/høytid)',
+          'Se etter avvik mellom planlagt og faktisk arbeidstid'
+        ],
+        callout: {
+          type: 'info',
+          title: 'Manglende stempling?',
+          content: 'Hvis du glemte å stemple ut, vil vakten vises som ufullstendig. Leder må manuelt korrigere dette.'
+        }
+      },
+      {
+        id: 'sign-timesheet',
+        title: 'Signer timelisten',
+        content: 'Når du har kontrollert at alt stemmer, signerer du timene.',
+        subSteps: [
+          'MinGat: Marker rader og klikk "Signer valgte"',
+          'GatGo: Trykk på vakten og velg "Signer", eller sveip til høyre for hurtigsignering',
+          'En grønn hake viser at vakten er signert'
+        ],
+        callout: {
+          type: 'success',
+          title: 'Etter signering',
+          content: 'Signerte timer sendes til leder for godkjenning. Du kan fjerne signeringen hvis du oppdager feil (før leder godkjenner).'
+        }
+      },
+      {
+        id: 'troubleshoot-pay',
+        title: 'Mangler lønn?',
+        content: 'Hvis overtid eller tillegg mangler på lønnsslippen, sjekk statusnivået i MinGat.',
+        subSteps: [
+          'Usignert: Du må signere den først',
+          'Nivå 1 (Til godkjenning): Ligger hos din avdelingsleder - kontakt leder',
+          'Nivå 2 (Godkjent): Sendt til lønn',
+          'Overført: Sendt til bank/utbetaling'
+        ],
+        callout: {
+          type: 'warning',
+          title: 'Frister',
+          content: 'Timer må være godkjent av leder før lønnskjøringsfristen (ofte rundt 10. i måneden) for å komme med på neste utbetaling.'
+        }
+      }
+    ],
+    relatedGuides: ['gatgo-mobile-setup'],
+    faq: [
+      {
+        question: 'Hva gjør jeg hvis jeg har signert feil?',
+        answer: 'Så lenge leder ikke har godkjent, kan du velge "Fjern signering" for å åpne vakten igjen og gjøre endringer.'
+      },
+      {
+        question: 'Hvorfor står timelisten min på "Nivå 1"?',
+        answer: 'Nivå 1 betyr at den er signert av deg men venter på leders godkjenning. Kontakt din nærmeste leder hvis det haster.'
+      },
+      {
+        question: 'Kan jeg se historiske timelister?',
+        answer: 'Ja, bruk periodevelgeren til å navigere tilbake til tidligere måneder.'
+      },
+      {
+        question: 'Hva betyr "Usignerte timer"?',
+        answer: 'Timer som du ennå ikke har kontrollert og signert. Disse vil ikke bli behandlet for lønn.'
+      }
+    ]
+  },
+
+  // ============================================
+  // GUIDE 7: COMPLIANCE (GODKJENNINGER)
+  // ============================================
+  {
+    id: 'compliance',
+    title: 'Approvals and Compliance',
+    titleNo: 'Godkjenninger og samsvar',
+    summary: 'Understanding approval levels and compliance in GAT',
+    summaryNo: 'Forstå godkjenningsnivåer og regeletterlevelse i GAT',
+    keywords: ['nivå', 'godkjenning', 'level', 'status', 'lønnskjøring', 'aml', 'hviletid', 'compliance'],
+    category: 'compliance',
+    interface: 'mingat',
+    complexity: 'intermediate',
+    estimatedTime: '5 minutter',
+    steps: [
+      {
+        id: 'compliance-overview',
+        title: 'Om godkjenningssystemet',
+        content: 'GAT har et flernivå godkjenningssystem som sikrer at timer og vakter kontrolleres før utbetaling. Systemet følger også automatisk opp brudd på arbeidsmiljøloven.',
+        callout: {
+          type: 'info',
+          title: 'Automatisk kontroll',
+          content: 'GAT overvåker automatisk hviletider, arbeidstidsbegrensninger og andre AML-krav.'
+        }
+      },
+      {
+        id: 'level-1',
+        title: 'Nivå 1: Ledergodkjenning',
+        content: 'Dette er den lokale kontrollen. Din avdelingsleder sjekker at du faktisk var på jobb og at kodene stemmer.',
+        subSteps: [
+          'Leder ser alle signerte timer fra sine ansatte',
+          'Leder kontrollerer at vaktene stemmer med bemanningsplanen',
+          'Leder godkjenner eller returnerer for korrigering',
+          'Godkjente timer går videre til Nivå 2'
+        ]
+      },
+      {
+        id: 'level-2',
+        title: 'Nivå 2: Lønn/HR-kontroll',
+        content: 'Etter Nivå 1 går listen til sentral kontroll. HR/Lønn ser etter formelle feil eller brudd på tariffavtaler.',
+        subSteps: [
+          'Automatisk kontroll av tariffbestemmelser',
+          'Sjekk av overtidsgrenser og tilleggsberegning',
+          'Ved godkjenning sendes til lønnssystem',
+          'Ved avvik returneres til leder for oppklaring'
+        ],
+        callout: {
+          type: 'warning',
+          title: 'Låst for endringer',
+          content: 'Når en vakt har nådd Nivå 2, kan den ikke endres av deg eller din leder. Da må lønningskontoret kontaktes for korrigering.'
+        }
+      },
+      {
+        id: 'aml-compliance',
+        title: 'Arbeidsmiljøloven (AML)',
+        content: 'GAT håndhever automatisk flere AML-bestemmelser for å beskytte ansattes helse og sikkerhet.',
+        subSteps: [
+          '11 timers hviletid: Minimum hvile mellom to vakter',
+          'Ukentlig arbeidstid: Maks 40 timer (ordinær) eller avtalt overtidsgrense',
+          'Søndagsfri: Krav om fri annenhver søndag (med unntak)',
+          'Nattarbeid: Særlige begrensninger og kompensasjon'
+        ],
+        callout: {
+          type: 'error',
+          title: 'Brudd varsles',
+          content: 'Hvis en vakt eller et bytte bryter AML-regler, vil GAT vise en advarsel og kan nekte handlingen.'
+        }
+      },
+      {
+        id: 'dispute-resolution',
+        title: 'Ved uenighet',
+        content: 'Hvis du er uenig i en godkjenning eller avvisning, har du mulighet til å ta det opp.',
+        subSteps: [
+          'Kontakt din nærmeste leder først',
+          'Ved vedvarende uenighet, ta det opp med HR',
+          'Alle endringer logges i systemet for sporbarhet',
+          'Tillitsvalgte kan bistå ved behov'
+        ]
+      }
+    ],
+    relatedGuides: ['time-tracking'],
+    faq: [
+      {
+        question: 'Hva betyr det at min timeliste er "låst"?',
+        answer: 'En låst timeliste har nådd Nivå 2 og kan ikke endres av deg eller leder. Kontakt lønningskontoret/Ansatteservice for korrigeringer.'
+      },
+      {
+        question: 'Hvorfor ble vaktbyttet mitt avvist?',
+        answer: 'GAT avviser automatisk bytter som bryter AML-regler, f.eks. for kort hviletid. Sjekk feilmeldingen for detaljer.'
+      },
+      {
+        question: 'Hvem kontakter jeg ved lønsfeil?',
+        answer: 'Hvis timelisten er på Nivå 1: Kontakt leder. Hvis på Nivå 2 eller overført: Kontakt Ansatteservice/lønningskontoret.'
+      },
+      {
+        question: 'Kan jeg se hvem som har godkjent timene mine?',
+        answer: 'Ja, GAT logger alle handlinger. Du kan se godkjenningshistorikk i detaljvisningen for hver vakt.'
+      }
+    ]
+  },
+
+  // ============================================
+  // GUIDE 8: PÅLOGGING (LOGIN)
+  // ============================================
+  {
+    id: 'pålogging',
+    title: 'Login to MinGat',
+    titleNo: 'Pålogging til MinGat',
+    summary: 'How to log in and reset password',
+    summaryNo: 'Hvordan logge inn og tilbakestille passord',
+    keywords: ['pålogging', 'login', 'logg inn', 'passord', 'glemt', 'password', 'brukernavn', '2fa', 'tofaktor'],
+    category: 'authentication',
+    interface: 'mingat',
+    complexity: 'basic',
+    estimatedTime: '2-5 minutter',
+    steps: [
+      {
+        id: 'login-step1',
+        title: 'Åpne påloggingssiden',
+        content: 'Gå til den offisielle eksterne påloggingssiden for MinGat i nettleseren din.',
+        callout: {
+          type: 'info',
+          title: 'Ekstern URL',
+          content: 'Bruk alltid https://mingat.helsenord.no når du logger inn hjemmefra. Interne snarveier fungerer ikke eksternt.'
+        }
+      },
+      {
+        id: 'login-step2',
+        title: 'Skriv inn brukernavn og passord',
+        content: 'Bruk dine vanlige Helse Nord-legitimasjoner.',
+        subSteps: [
+          'Brukernavn: Ditt Helse Nord brukernavn (vanligvis dine initialer, f.eks. "ABC")',
+          'Passord: Samme passord som du bruker på jobb-PC-en'
+        ]
+      },
+      {
+        id: 'login-step3',
+        title: 'Bekreft med tofaktor (2FA)',
+        content: 'Etter brukernavn og passord må du bekrefte identiteten din.',
+        subSteps: [
+          'SMS-kode: En 6-sifret kode sendes til ditt registrerte mobilnummer',
+          'Microsoft Authenticator: Åpne appen og godkjenn forespørselen (anbefalt)'
+        ],
+        callout: {
+          type: 'success',
+          title: 'Anbefalt: Microsoft Authenticator',
+          content: 'Authenticator-appen er raskere og mer pålitelig enn SMS, spesielt i områder med dårlig dekning.'
+        }
+      },
+      {
+        id: 'login-step4',
+        title: 'Velg foretak',
+        content: 'Hvis du jobber på flere helseforetak, velg riktig organisasjon fra listen.',
+        subSteps: [
+          'Velg f.eks. "Finnmarkssykehuset" fra nedtrekksmenyen',
+          'Skjermen oppdateres med dine vakter og data for valgt foretak'
+        ],
+        callout: {
+          type: 'warning',
+          title: 'Velg riktig',
+          content: 'Velger du feil foretak, må du logge helt ut og inn igjen for å bytte.'
+        }
+      },
+      {
+        id: 'login-forgot-pw',
+        title: 'Glemt passord?',
+        content: 'Hvis du har glemt passordet eller det har utløpt, følg disse stegene.',
+        subSteps: [
+          'På jobb: Klikk "Glemt passord" på innloggingsskjermen og følg instruksjonene',
+          'Hjemmefra: Du kan vanligvis IKKE endre passord eksternt',
+          'Utløpt passord: Må endres fra en PC på sykehuset',
+          'Trenger hjelp? Ring Helse Nord IKT på 07022'
+        ],
+        callout: {
+          type: 'error',
+          title: 'Låst ute hjemme?',
+          content: 'Hvis passordet har utløpt mens du er hjemme, må du ringe 07022 for å få hjelp til å tilbakestille det.'
+        }
+      }
+    ],
+    relatedGuides: ['home-access-setup', 'microsoft-authenticator-setup'],
+    faq: [
+      {
+        question: 'Hva er brukernavnet mitt?',
+        answer: 'Brukernavnet er vanligvis dine initialer (f.eks. "ABC" eller "GUHV"). Det er det samme du bruker for å logge på PC-en på jobb.'
+      },
+      {
+        question: 'Hvor ofte må jeg bytte passord?',
+        answer: 'Dette følger helseforetakets policy, vanligvis hver 3. måned. Du får varsel før passordet utløper.'
+      },
+      {
+        question: 'Kan jeg bruke BankID for å logge inn?',
+        answer: 'Nei, MinGat bruker Helse Nord sin egen autentisering med brukernavn, passord og 2FA (SMS eller Authenticator).'
+      },
+      {
+        question: 'Hvorfor får jeg ikke SMS-kode?',
+        answer: 'Sjekk at mobilnummeret ditt er riktig registrert i telefonkatalogen. Dette må gjøres fra en PC på sykehuset.'
+      }
+    ]
+  },
+
+  // ============================================
+  // GUIDE 9: NAVIGASJON (NAVIGATION)
+  // ============================================
+  {
+    id: 'navigasjon',
+    title: 'Navigation in MinGat',
+    titleNo: 'Navigasjon i MinGat',
+    summary: 'Learn how to navigate the MinGat interface',
+    summaryNo: 'Lær hvordan du navigerer i MinGat-grensesnittet',
+    keywords: ['navigasjon', 'meny', 'dashboard', 'startside', 'kalender', 'widgets', 'oversikt'],
+    category: 'navigation',
+    interface: 'mingat',
+    complexity: 'basic',
+    estimatedTime: '5 minutter',
+    steps: [
+      {
+        id: 'nav-dashboard',
+        title: 'Startsiden (Dashboard)',
+        content: 'Når du logger inn kommer du til startsiden som gir deg rask oversikt over det viktigste.',
+        subSteps: [
+          'I dag og i morgen: Viser din timeplan for de neste 48 timene',
+          'Påminnelser: Røde varsler om ting du må gjøre (f.eks. signere timer)',
+          'Ledige vakter: Vakter du kan søke på via JaTakk',
+          'Meldinger: Systemmeldinger eller beskjeder fra leder',
+          'Mine apper: Snarvei til GatGo-oppsett'
+        ]
+      },
+      {
+        id: 'nav-main-menu',
+        title: 'Hovedmeny (Venstre side)',
+        content: 'Den vertikale menyen til venstre gir tilgang til dine personlige verktøy.',
+        subSteps: [
+          'Min kalender: Hele din turnusplan med alle vakter',
+          'Forespørsler: Status på ferieønsker, bytter og søknader',
+          'Timeliste: Kontroller og signer timer for lønn',
+          'Mine banker: Oversikt over fleksitid, ferie og avspasering',
+          'Min profil: Personlig informasjon og innstillinger'
+        ]
+      },
+      {
+        id: 'nav-top-menu',
+        title: 'Toppmeny',
+        content: 'Den horisontale menyen øverst gir tilgang til hovedmoduler.',
+        subSteps: [
+          'Hjem: Tilbake til startsiden',
+          'Kalender: Utvidet kalendervisning',
+          'Avdelinger: Se andre avdelinger (hvis tilgang)',
+          'Søk: Finn ansatte, vakter eller dokumenter'
+        ]
+      },
+      {
+        id: 'nav-department',
+        title: 'Bytte avdeling',
+        content: 'Jobber du på flere avdelinger? Bruk avdelingsvelgeren øverst i skjermen.',
+        subSteps: [
+          'Klikk på avdelingsnavnet øverst til venstre',
+          'En nedtrekksmeny viser alle avdelinger du har tilgang til',
+          'Velg ønsket avdeling',
+          'Skjermen oppdateres med data for valgt avdeling'
+        ],
+        callout: {
+          type: 'warning',
+          title: 'Ser du feil data?',
+          content: 'Hvis du ser vakter eller timer for feil avdeling, sjekk at du har valgt riktig avdeling i velgeren øverst.'
+        }
+      },
+      {
+        id: 'nav-calendar',
+        title: 'Bruke kalenderen',
+        content: 'Kalenderen er ditt hovedverktøy for å se og håndtere vakter.',
+        subSteps: [
+          'Klikk på en dato for å se detaljer for den dagen',
+          'Dobbeltklikk på en vakt for å åpne redigeringsmodus (hvis tilgjengelig)',
+          'Høyreklikk for kontekstmeny med flere valg',
+          'Bruk pilene for å navigere mellom uker/måneder',
+          'Fargekoder viser vakttype (dag, kveld, natt, fravær)'
+        ]
+      },
+      {
+        id: 'nav-shortcuts',
+        title: 'Nyttige snarveier',
+        content: 'Lær disse snarveiene for raskere navigering.',
+        subSteps: [
+          'Klikk på logo: Går alltid tilbake til startsiden',
+          'Brødsmulesti: Viser hvor du er, klikk for å gå tilbake',
+          'Tannhjul-ikon: Åpner innstillinger',
+          'Bjelle-ikon: Viser varslinger og meldinger'
+        ]
+      }
+    ],
+    relatedGuides: ['gatgo-mobile-setup'],
+    faq: [
+      {
+        question: 'Hvordan kommer jeg tilbake til startsiden?',
+        answer: 'Klikk på "Hjem" i toppmenyen eller på MinGat-logoen øverst til venstre.'
+      },
+      {
+        question: 'Hvor finner jeg mine feriedager?',
+        answer: 'Gå til "Mine banker" i venstremenyen. Der ser du oversikt over ferie, fleksitid og avspasering.'
+      },
+      {
+        question: 'Kan jeg tilpasse startsiden?',
+        answer: 'Ja, noen widgets kan flyttes eller skjules. Klikk på tannhjulet for innstillinger.'
+      },
+      {
+        question: 'Hvorfor ser jeg ikke alle menyvalg?',
+        answer: 'Menyvalg avhenger av din rolle og tilganger. Kontakt leder hvis du mangler tilgang du trenger.'
+      }
+    ]
+  },
+
+  // ============================================
+  // GUIDE 10: FEILSØKING (TROUBLESHOOTING)
+  // ============================================
+  {
+    id: 'feilsøking',
+    title: 'Troubleshooting',
+    titleNo: 'Feilsøking',
+    summary: 'Solutions to common problems in MinGat and GatGo',
+    summaryNo: 'Løsninger på vanlige problemer i MinGat og GatGo',
+    keywords: ['feil', 'problem', 'error', 'hjelp', 'fungerer ikke', 'feilsøking', 'support', 'løsning'],
+    category: 'troubleshooting',
+    interface: 'all',
+    complexity: 'basic',
+    estimatedTime: '5-10 minutter',
+    steps: [
+      {
+        id: 'trouble-login',
+        title: 'Innloggingsproblemer',
+        content: 'De vanligste problemene med å logge inn på MinGat.',
+        subSteps: [
+          '"Siden kan ikke vises": Bruk ekstern URL https://mingat.helsenord.no, ikke interne snarveier',
+          'Ingen SMS-kode: Vent 2 min, sjekk at mobilnummer er registrert i telefonkatalogen',
+          'Feil brukernavn/passord: Brukernavn er vanligvis dine initialer, passord er det samme som på jobb',
+          'Tomt skjermbilde: Velg riktig foretak fra nedtrekksmenyen'
+        ],
+        callout: {
+          type: 'info',
+          title: 'Utløpt passord?',
+          content: 'Hvis passordet har utløpt, må det endres fra en PC på sykehuset. Hjemmefra må du ringe 07022.'
+        }
+      },
+      {
+        id: 'trouble-shift-swap',
+        title: 'Vaktbytte avvist',
+        content: 'GAT kan avvise vaktbytter av flere grunner.',
+        subSteps: [
+          'Hviletidsbrudd: GAT krever minimum 11 timer mellom vakter (AML-krav)',
+          'For mange timer: Byttet gir mer enn tillatt arbeidstid den uken',
+          'Kompetansekrav: Mottaker mangler nødvendig kompetanse for vakten',
+          'Allerede godkjent: Vakten kan ikke byttes etter at den er godkjent'
+        ],
+        callout: {
+          type: 'warning',
+          title: 'Les feilmeldingen',
+          content: 'GAT viser en spesifikk feilmelding når byttet avvises. Les denne nøye for å forstå årsaken.'
+        }
+      },
+      {
+        id: 'trouble-timesheet',
+        title: 'Timeliste og lønn',
+        content: 'Problemer med timelister og lønnsutbetaling.',
+        subSteps: [
+          'Timer vises ikke: Sjekk at du har valgt riktig periode (uke/måned)',
+          'Kan ikke signere: Timer kan allerede være sendt til leder for godkjenning',
+          'Mangler lønn: Sjekk statusnivå - står den på Nivå 1, kontakt leder først',
+          'Feil tillegg: Kontroller at lønnskodene stemmer med faktisk arbeidstid'
+        ],
+        callout: {
+          type: 'error',
+          title: 'Frister',
+          content: 'Husk at timer må være godkjent av leder FØR lønnskjøringsfristen (ofte rundt 10. i måneden).'
+        }
+      },
+      {
+        id: 'trouble-gatgo',
+        title: 'GatGo-problemer',
+        content: 'Vanlige problemer med mobilappen GatGo.',
+        subSteps: [
+          'QR-kode fungerer ikke: Sjekk at du er logget inn på MinGat på PC-en først',
+          'App logger ut: PIN eller biometri må settes opp på nytt etter oppdateringer',
+          'Synkroniserer ikke: Sjekk internettforbindelse, lukk og åpne appen på nytt',
+          'Feil vakter vises: Sjekk at riktig avdeling er valgt i appen'
+        ]
+      },
+      {
+        id: 'trouble-display',
+        title: 'Visningsproblemer',
+        content: 'Problemer med hvordan MinGat vises i nettleseren.',
+        subSteps: [
+          'Skjermen er rotete: Prøv å oppdatere siden (F5 eller Ctrl+R)',
+          'Knapper fungerer ikke: Tøm nettleserens cache og prøv igjen',
+          'Feil språk: Sjekk språkinnstillinger i din profil',
+          'Fungerer ikke på mobil: Bruk GatGo-appen i stedet for nettleser på mobil'
+        ],
+        callout: {
+          type: 'info',
+          title: 'Anbefalt nettleser',
+          content: 'MinGat fungerer best i Chrome, Edge, Safari eller Firefox. Unngå Internet Explorer.'
+        }
+      },
+      {
+        id: 'trouble-contact',
+        title: 'Kontakt support',
+        content: 'Hvis du ikke finner løsningen selv, kontakt riktig instans.',
+        subSteps: [
+          'Helse Nord IKT: 07022 - For tekniske problemer, pålogging, passord',
+          'Din leder: For spørsmål om vakter, timer, godkjenninger og fravær',
+          'HR/Personal: For spørsmål om ansettelse, lønn og arbeidsavtale',
+          'Lokal IT: Sjekk intranett for kontaktinfo til lokal support'
+        ],
+        callout: {
+          type: 'success',
+          title: 'Tips før du ringer',
+          content: 'Ha klar: Ditt brukernavn, hvilken feilmelding du får, og hva du prøvde å gjøre.'
+        }
+      }
+    ],
+    relatedGuides: ['pålogging', 'gatgo-mobile-setup', 'time-tracking'],
+    faq: [
+      {
+        question: 'MinGat er tregt - hva kan jeg gjøre?',
+        answer: 'Prøv å lukke andre faner/programmer, tøm cache, eller bruk en annen nettleser. Ved vedvarende tregt system, kontakt 07022.'
+      },
+      {
+        question: 'Jeg får feilmelding jeg ikke forstår - hva gjør jeg?',
+        answer: 'Ta et skjermbilde av feilmeldingen og kontakt 07022. De trenger å se nøyaktig hva som står.'
+      },
+      {
+        question: 'Kan jeg bruke MinGat på iPad/nettbrett?',
+        answer: 'Ja, men opplevelsen er bedre med GatGo-appen. MinGat i nettleser er optimalisert for PC/Mac.'
+      },
+      {
+        question: 'Hvem kontakter jeg ved hastesaker?',
+        answer: 'For akutte driftsproblemer som påvirker pasientbehandling, kontakt din leder umiddelbart.'
+      }
+    ]
   }
 ];
 
