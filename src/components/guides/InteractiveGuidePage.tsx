@@ -2,6 +2,8 @@
 
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { VPNLoginGuide } from './VPNLoginGuide';
+import { FoldOutPhone } from './Foldoutphone';
+import { MobileFoldOutPhone, MobileDemoCard } from './MobileFoldOutPhone';
 import { AppSidebar } from '../sidebar/AppSidebar';
 import { MinGatInterface } from '../mock/MinGatInterface';
 import { MinGatPCInterface } from '../mock/MinGatPCInterface';
@@ -14,7 +16,7 @@ import { guideContent, setGuideNavigator } from '@/lib/guides/guide-content';
 import { accessGuides } from '@/data/access-guides';
 import { gatHelpData, getAllTopicIds } from '@/data/gatHelpData';
 
-// Helper to flatten hierarchy for searching titles by ID
+// Helper functions
 const findSectionTitle = (id: string, items = helpHierarchy): string => {
   for (const item of items) {
     if (item.id === id) return item.title;
@@ -25,14 +27,11 @@ const findSectionTitle = (id: string, items = helpHierarchy): string => {
   }
   const cat = categories.find(c => c.id === id);
   if (cat) return cat.nameNo;
-
   const accessGuide = accessGuides.find(g => g.id === id);
   if (accessGuide) return accessGuide.titleNo;
-
   return id;
 };
 
-// Get metadata for a guide
 const getGuideMetadata = (id: string) => {
   const guide = accessGuides.find(g => g.id === id);
   if (guide) {
@@ -45,11 +44,8 @@ const getGuideMetadata = (id: string) => {
   return null;
 };
 
-// Build searchable index
 const buildSearchIndex = () => {
   const index: { id: string; title: string; keywords: string[] }[] = [];
-  
-  // Add access guides
   accessGuides.forEach(guide => {
     index.push({
       id: guide.id,
@@ -57,8 +53,6 @@ const buildSearchIndex = () => {
       keywords: guide.keywords || []
     });
   });
-  
-  // Add gatHelpData topics
   const addTopics = (topics: typeof gatHelpData) => {
     topics.forEach(topic => {
       index.push({
@@ -72,8 +66,6 @@ const buildSearchIndex = () => {
     });
   };
   addTopics(gatHelpData);
-  
-  // Add categories
   categories.forEach(cat => {
     index.push({
       id: cat.id,
@@ -81,7 +73,6 @@ const buildSearchIndex = () => {
       keywords: [cat.name.toLowerCase(), cat.nameNo.toLowerCase()]
     });
   });
-  
   return index;
 };
 
@@ -90,7 +81,6 @@ export function InteractiveGuidePage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [showFAQ, setShowFAQ] = useState(false);
   
-  // Ensure we always have a valid guide selected when not showing FAQ
   const effectiveGuideId = showFAQ ? null : (selectedGuideId || 'home-access-setup');
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<{ id: string; title: string }[]>([]);
@@ -99,25 +89,20 @@ export function InteractiveGuidePage() {
   const [showSearchDropdown, setShowSearchDropdown] = useState(false);
   const { markAsViewed } = useGuideProgress();
 
-  // Scroll synchronization
   const contentAreaRef = useRef<HTMLDivElement>(null);
   const [currentSection, setCurrentSection] = useState<string>('');
   const [highlightedElement, setHighlightedElement] = useState<string>('');
   
-  // View mode toggle (mobile/desktop/vpn-guide)
-  const [viewMode, setViewMode] = useState<'mobile' | 'desktop' | 'vpn-guide'>('vpn-guide');
+  const [viewMode, setViewMode] = useState<'mobile-fold' | 'mobile-inline' | 'desktop' | 'vpn-guide'>('vpn-guide');
 
   const searchIndex = useMemo(() => buildSearchIndex(), []);
 
-  // Handle element click for tracking/analytics
   const handleElementClick = useCallback((elementId: string) => {
     console.log('Element clicked:', elementId);
     setHighlightedElement(elementId);
-    // Auto-clear highlight after 2 seconds
     setTimeout(() => setHighlightedElement(''), 2000);
   }, []);
 
-  // Handle navigation
   const handleNavigate = useCallback((guideId: string) => {
     setSelectedGuideId(guideId);
     setSidebarOpen(false);
@@ -130,13 +115,12 @@ export function InteractiveGuidePage() {
     }
   }, []);
 
-  // Scroll to specific section when phone menu is clicked
   const scrollToSection = useCallback((sectionId: string) => {
     const element = document.getElementById(`section-${sectionId}`);
     const contentArea = contentAreaRef.current;
     
     if (element && contentArea) {
-      const offsetTop = element.offsetTop - 100; // 100px margin from top
+      const offsetTop = element.offsetTop - 100;
       contentArea.scrollTo({
         top: offsetTop,
         behavior: 'smooth'
@@ -145,7 +129,6 @@ export function InteractiveGuidePage() {
     }
   }, []);
 
-  // Register navigator callback
   useEffect(() => {
     setGuideNavigator(handleNavigate);
     return () => setGuideNavigator(() => {});
@@ -157,23 +140,16 @@ export function InteractiveGuidePage() {
     }
   }, [effectiveGuideId, showFAQ, markAsViewed]);
 
-  // Search handling
   useEffect(() => {
     if (searchQuery.length >= 2) {
       const lowerQuery = searchQuery.toLowerCase();
-      
-      // Search guides
       const guideResults = searchIndex.filter(item =>
         item.title.toLowerCase().includes(lowerQuery) ||
         item.keywords.some(kw => kw.includes(lowerQuery))
       ).slice(0, 8);
-      
       setSearchResults(guideResults);
-      
-      // Search FAQ
       const faqMatches = searchFAQ(searchQuery).slice(0, 5);
       setFaqResults(faqMatches);
-      
       setShowSearchDropdown(true);
     } else {
       setSearchResults([]);
@@ -182,7 +158,6 @@ export function InteractiveGuidePage() {
     }
   }, [searchQuery, searchIndex]);
 
-  // Close sidebar on escape
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -210,7 +185,6 @@ export function InteractiveGuidePage() {
   const sectionTitle = activeContent ? activeContent.title : findSectionTitle(effectiveGuideId || '');
   const metadata = effectiveGuideId ? getGuideMetadata(effectiveGuideId) : null;
 
-  // FAQ Component
   const FAQSection = () => (
     <div className="p-4 sm:p-6 lg:p-8">
       <div className="h-10 lg:hidden" />
@@ -317,7 +291,6 @@ export function InteractiveGuidePage() {
         {/* Search Bar */}
         <div className="bg-white border-b border-gray-200 p-3 sm:p-4 lg:pl-4">
           <div className="flex items-center gap-3 max-w-2xl mx-auto lg:mx-0">
-            {/* Spacer for mobile menu button */}
             <div className="w-10 lg:hidden" />
             
             <div className="flex-1 relative">
@@ -333,7 +306,6 @@ export function InteractiveGuidePage() {
                 />
               </div>
 
-              {/* Search Dropdown */}
               {showSearchDropdown && (searchResults.length > 0 || faqResults.length > 0) && (
                 <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-xl z-50 max-h-96 overflow-y-auto">
                   {searchResults.length > 0 && (
@@ -384,7 +356,6 @@ export function InteractiveGuidePage() {
               )}
             </div>
 
-            {/* FAQ Button */}
             <button
               onClick={() => setShowFAQ(!showFAQ)}
               className={`
@@ -415,7 +386,6 @@ export function InteractiveGuidePage() {
                 <div className="h-10 lg:hidden" />
                 
                 <div className="max-w-2xl mx-auto">
-                  {/* Header */}
                   <div className="mb-6 pb-6 border-b border-gray-100">
                     <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">{sectionTitle}</h1>
                     <div className="flex flex-wrap items-center gap-3 sm:gap-4 text-sm text-gray-500">
@@ -446,7 +416,6 @@ export function InteractiveGuidePage() {
                     </div>
                   </div>
 
-                  {/* Content */}
                   <div className="prose prose-blue max-w-none prose-sm sm:prose-base">
                     {activeContent ? (
                       activeContent.content
@@ -460,19 +429,32 @@ export function InteractiveGuidePage() {
                       </div>
                     )}
                   </div>
+                  
+                  {/* Mobile Demo Card - Only visible on mobile/tablet */}
+                  <div className="xl:hidden mt-8">
+                    <MobileDemoCard
+                      onNavigate={scrollToSection}
+                      currentSection={currentSection}
+                      onElementClick={handleElementClick}
+                      highlightedElement={highlightedElement}
+                    />
+                  </div>
                 </div>
               </div>
             )}
           </div>
 
-          {/* Interactive Mock - Hidden on smaller screens */}
+          {/* Interactive Mock - Desktop only (xl and up) */}
           <div className="hidden xl:flex w-1/2 bg-gray-50 flex-col relative">
             <div className="absolute top-4 right-4 z-10 bg-black/75 text-white px-3 py-1 rounded-full text-xs font-medium backdrop-blur-sm">
-              Interaktiv Demo {viewMode === 'mobile' ? '(Mobil)' : viewMode === 'desktop' ? '(PC)' : '(VPN Guide)'}{currentSection && ` · ${currentSection}`}
+              Interaktiv Demo {
+                viewMode === 'mobile-fold' ? '(Mobil - Fold)' : 
+                viewMode === 'mobile-inline' ? '(Mobil - Inline)' : 
+                viewMode === 'desktop' ? '(PC)' : '(VPN Guide)'
+              }
             </div>
             
             <div className="flex-1 px-8 py-8 flex flex-col items-center justify-center overflow-auto">
-              {/* View Mode Toggle - Above the mock interface */}
               <div className="flex justify-center mb-4">
                 <div className="flex items-center gap-1 bg-white rounded-lg p-1 shadow-md border border-gray-200">
                   <button
@@ -483,23 +465,33 @@ export function InteractiveGuidePage() {
                         ? 'bg-blue-600 text-white shadow-sm'
                         : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'}
                     `}
-                    title="VPN Innlogging Guide"
                   >
                     <ShieldCheck className="w-5 h-5" />
                     <span>VPN</span>
                   </button>
                   <button
-                    onClick={() => setViewMode('mobile')}
+                    onClick={() => setViewMode('mobile-fold')}
                     className={`
                       flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-all
-                      ${viewMode === 'mobile'
+                      ${viewMode === 'mobile-fold'
                         ? 'bg-blue-600 text-white shadow-sm'
                         : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'}
                     `}
-                    title="Mobilvisning (GatGo)"
                   >
                     <Smartphone className="w-5 h-5" />
-                    <span>Mobil</span>
+                    <span>Mobil (Fold)</span>
+                  </button>
+                  <button
+                    onClick={() => setViewMode('mobile-inline')}
+                    className={`
+                      flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-all
+                      ${viewMode === 'mobile-inline'
+                        ? 'bg-blue-600 text-white shadow-sm'
+                        : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'}
+                    `}
+                  >
+                    <Smartphone className="w-5 h-5" />
+                    <span>Mobil (Inline)</span>
                   </button>
                   <button
                     onClick={() => setViewMode('desktop')}
@@ -509,7 +501,6 @@ export function InteractiveGuidePage() {
                         ? 'bg-blue-600 text-white shadow-sm'
                         : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'}
                     `}
-                    title="PC-visning (MinGat)"
                   >
                     <Monitor className="w-5 h-5" />
                     <span>PC</span>
@@ -518,15 +509,21 @@ export function InteractiveGuidePage() {
               </div>
 
               {viewMode === 'vpn-guide' ? (
-                /* VPN Login Guide */
                 <div className="w-full max-w-2xl overflow-y-auto">
                   <VPNLoginGuide 
                     highlightedElement={highlightedElement}
                     onElementClick={handleElementClick}
                   />
                 </div>
-              ) : viewMode === 'mobile' ? (
-                /* Mobile Phone View */
+              ) : viewMode === 'mobile-fold' ? (
+                <FoldOutPhone
+                  onNavigate={scrollToSection}
+                  currentSection={currentSection}
+                  onElementClick={handleElementClick}
+                  highlightedElement={highlightedElement}
+                  defaultExpanded={false}
+                />
+              ) : viewMode === 'mobile-inline' ? (
                 <div className="w-full max-w-md aspect-[9/16] md:aspect-auto md:h-[800px] md:w-[400px] bg-white rounded-[2rem] shadow-2xl overflow-hidden border-8 border-gray-800 ring-1 ring-gray-900/5">
                   <MinGatInterface 
                     onNavigate={scrollToSection}
@@ -536,7 +533,6 @@ export function InteractiveGuidePage() {
                   />
                 </div>
               ) : (
-                /* Desktop PC View - 800px height (same as phone), full width with padding */
                 <div className="w-full max-w-5xl h-[800px] bg-white rounded-lg shadow-2xl overflow-hidden border border-gray-300">
                   <MinGatPCInterface />
                 </div>
@@ -544,6 +540,16 @@ export function InteractiveGuidePage() {
             </div>
           </div>
         </div>
+      </div>
+      
+      {/* Mobile Floating Button - Only visible on mobile/tablet (below xl) */}
+      <div className="xl:hidden">
+        <MobileFoldOutPhone
+          onNavigate={scrollToSection}
+          currentSection={currentSection}
+          onElementClick={handleElementClick}
+          highlightedElement={highlightedElement}
+        />
       </div>
     </div>
   );
