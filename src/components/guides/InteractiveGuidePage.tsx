@@ -1,13 +1,14 @@
 'use client';
 
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
+import { VPNLoginGuide } from './VPNLoginGuide';
 import { AppSidebar } from '../sidebar/AppSidebar';
 import { MinGatInterface } from '../mock/MinGatInterface';
 import { MinGatPCInterface } from '../mock/MinGatPCInterface';
 import { categories } from '@/data/categories';
 import { helpHierarchy } from '@/data/help-hierarchy';
 import { faqData, faqCategories, searchFAQ, FAQItem } from '@/data/faqData';
-import { BookOpen, Clock, Smartphone, Monitor, Menu, X, Search, HelpCircle, ChevronDown, ChevronRight, ArrowRight } from 'lucide-react';
+import { BookOpen, Clock, Smartphone, Monitor, Menu, X, Search, HelpCircle, ChevronDown, ChevronRight, ArrowRight, ShieldCheck } from 'lucide-react';
 import { useGuideProgress } from '@/hooks/useGuideProgress';
 import { guideContent, setGuideNavigator } from '@/lib/guides/guide-content';
 import { accessGuides } from '@/data/access-guides';
@@ -103,8 +104,8 @@ export function InteractiveGuidePage() {
   const [currentSection, setCurrentSection] = useState<string>('');
   const [highlightedElement, setHighlightedElement] = useState<string>('');
   
-  // View mode toggle (mobile/desktop)
-  const [viewMode, setViewMode] = useState<'mobile' | 'desktop'>('mobile');
+  // View mode toggle (mobile/desktop/vpn-guide)
+  const [viewMode, setViewMode] = useState<'mobile' | 'desktop' | 'vpn-guide'>('vpn-guide');
 
   const searchIndex = useMemo(() => buildSearchIndex(), []);
 
@@ -467,17 +468,30 @@ export function InteractiveGuidePage() {
           {/* Interactive Mock - Hidden on smaller screens */}
           <div className="hidden xl:flex w-1/2 bg-gray-50 flex-col relative">
             <div className="absolute top-4 right-4 z-10 bg-black/75 text-white px-3 py-1 rounded-full text-xs font-medium backdrop-blur-sm">
-              Interaktiv Demo {viewMode === 'mobile' ? '(Mobil)' : '(PC)'}{currentSection && ` · ${currentSection}`}
+              Interaktiv Demo {viewMode === 'mobile' ? '(Mobil)' : viewMode === 'desktop' ? '(PC)' : '(VPN Guide)'}{currentSection && ` · ${currentSection}`}
             </div>
             
-            <div className="flex-1 px-8 py-8 flex flex-col items-center justify-center overflow-hidden">
+            <div className="flex-1 px-8 py-8 flex flex-col items-center justify-center overflow-auto">
               {/* View Mode Toggle - Above the mock interface */}
               <div className="flex justify-center mb-4">
                 <div className="flex items-center gap-1 bg-white rounded-lg p-1 shadow-md border border-gray-200">
                   <button
+                    onClick={() => setViewMode('vpn-guide')}
+                    className={`
+                      flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-all
+                      ${viewMode === 'vpn-guide'
+                        ? 'bg-blue-600 text-white shadow-sm'
+                        : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'}
+                    `}
+                    title="VPN Innlogging Guide"
+                  >
+                    <ShieldCheck className="w-5 h-5" />
+                    <span>VPN</span>
+                  </button>
+                  <button
                     onClick={() => setViewMode('mobile')}
                     className={`
-                      flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all
+                      flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-all
                       ${viewMode === 'mobile'
                         ? 'bg-blue-600 text-white shadow-sm'
                         : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'}
@@ -490,7 +504,7 @@ export function InteractiveGuidePage() {
                   <button
                     onClick={() => setViewMode('desktop')}
                     className={`
-                      flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all
+                      flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-all
                       ${viewMode === 'desktop'
                         ? 'bg-blue-600 text-white shadow-sm'
                         : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'}
@@ -503,7 +517,15 @@ export function InteractiveGuidePage() {
                 </div>
               </div>
 
-              {viewMode === 'mobile' ? (
+              {viewMode === 'vpn-guide' ? (
+                /* VPN Login Guide */
+                <div className="w-full max-w-2xl overflow-y-auto">
+                  <VPNLoginGuide 
+                    highlightedElement={highlightedElement}
+                    onElementClick={handleElementClick}
+                  />
+                </div>
+              ) : viewMode === 'mobile' ? (
                 /* Mobile Phone View */
                 <div className="w-full max-w-md aspect-[9/16] md:aspect-auto md:h-[800px] md:w-[400px] bg-white rounded-[2rem] shadow-2xl overflow-hidden border-8 border-gray-800 ring-1 ring-gray-900/5">
                   <MinGatInterface 

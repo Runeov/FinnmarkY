@@ -1,18 +1,11 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Home, Calendar, MessageSquare, Clock, User, Bell, Menu, X, ChevronRight } from 'lucide-react';
-
-/**
- * MinGatInterface - Complete Mobile Mock with Navigation
- * 
- * Features:
- * - Hamburger menu for mobile navigation
- * - Dynamic content based on currentSection
- * - Responsive bottom navigation
- * - Click handlers for scroll sync
- * - Element highlighting support
- */
+import { 
+  Home, Calendar, MessageSquare, Clock, User, Bell, Menu, X, ChevronRight,
+  BookOpen, Users, Phone, CheckSquare, Wallet, FileText, Search, Plus,
+  CheckCircle, XCircle, AlertCircle, Download
+} from 'lucide-react';
 
 interface MinGatInterfaceProps {
   onNavigate?: (sectionId: string) => void;
@@ -23,12 +16,16 @@ interface MinGatInterfaceProps {
 
 export function MinGatInterface({ 
   onNavigate, 
-  currentSection = 'home',
+  currentSection: externalSection,
   onElementClick,
   highlightedElement
 }: MinGatInterfaceProps = {}) {
   
+  const [internalSection, setInternalSection] = useState<string>('home');
   const [menuOpen, setMenuOpen] = useState(false);
+  
+  // Use external section if provided, otherwise use internal
+  const currentSection = externalSection || internalSection;
   
   // Helper to check if element should be highlighted
   const isHighlighted = (elementId: string) => highlightedElement === elementId;
@@ -41,9 +38,28 @@ export function MinGatInterface({
   
   // Handle navigation click
   const handleNavClick = (sectionId: string, elementId: string) => {
+    setInternalSection(sectionId);
     onNavigate?.(sectionId);
     onElementClick?.(elementId);
     setMenuOpen(false);
+  };
+  
+  // Get page title
+  const getPageTitle = () => {
+    const titles: Record<string, string> = {
+      home: 'Startsiden',
+      calendar: 'Min Kalender',
+      requests: 'Forespørsler',
+      flextime: 'Fleksitid',
+      profile: 'Min Profil',
+      jatakk: 'Ja-takk (Ledige vakter)',
+      banker: 'Mine banker',
+      timeliste: 'Min timeliste',
+      vaktbok: 'Vaktbok',
+      telefonliste: 'Telefonliste',
+      tilgjengelighet: 'Min tilgjengelighet'
+    };
+    return titles[currentSection] || 'MinGat';
   };
   
   return (
@@ -68,363 +84,819 @@ export function MinGatInterface({
         >
           {menuOpen ? <X className="w-6 h-6 text-gray-700" /> : <Menu className="w-6 h-6 text-gray-700" />}
         </button>
-        <h1 className="text-lg font-bold text-gray-900">
-          {currentSection === 'home' && 'Startsiden'}
-          {currentSection === 'calendar' && 'Min Kalender'}
-          {currentSection === 'requests' && 'Forespørsler'}
-          {currentSection === 'flextime' && 'Fleksitid'}
-          {currentSection === 'profile' && 'Min Profil'}
-        </h1>
-        <div className="w-10"></div> {/* Spacer for centering */}
+        <h1 className="text-lg font-bold text-gray-900">{getPageTitle()}</h1>
+        <div className="w-10"></div>
       </div>
 
       {/* Slide-out Menu */}
       {menuOpen && (
         <div className="absolute top-[72px] left-0 right-0 bottom-0 z-50 bg-black/50" onClick={() => setMenuOpen(false)}>
           <div 
-            className="bg-white w-64 h-full shadow-xl"
+            className="bg-white w-72 h-full shadow-xl overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="p-4 space-y-2">
-              <button
+            <div className="p-4 space-y-1">
+              <MenuItem
+                icon={<Home className="w-5 h-5" />}
+                label="Startsiden"
+                active={currentSection === 'home'}
                 onClick={() => handleNavClick('home', 'menu-home')}
-                className={`w-full text-left px-4 py-3 rounded-lg flex items-center gap-3 transition-colors ${
-                  currentSection === 'home' ? 'bg-blue-50 text-blue-700' : 'hover:bg-gray-50 text-gray-700'
-                }`}
-              >
-                <Home className="w-5 h-5" />
-                <span className="font-medium">Startsiden</span>
-              </button>
+              />
               
-              <button
+              <MenuItem
+                icon={<Calendar className="w-5 h-5" />}
+                label="Min Kalender"
+                active={currentSection === 'calendar'}
                 onClick={() => handleNavClick('calendar', 'menu-calendar')}
-                className={`w-full text-left px-4 py-3 rounded-lg flex items-center gap-3 transition-colors ${
-                  currentSection === 'calendar' ? 'bg-blue-50 text-blue-700' : 'hover:bg-gray-50 text-gray-700'
-                }`}
-              >
-                <Calendar className="w-5 h-5" />
-                <span className="font-medium">Min Kalender</span>
-              </button>
+              />
               
-              <button
+              <MenuItem
+                icon={<Bell className="w-5 h-5" />}
+                label="Ja-takk (Ledige vakter)"
+                active={currentSection === 'jatakk'}
+                onClick={() => handleNavClick('jatakk', 'menu-jatakk')}
+              />
+              
+              <MenuItem
+                icon={<Wallet className="w-5 h-5" />}
+                label="Mine banker"
+                active={currentSection === 'banker'}
+                onClick={() => handleNavClick('banker', 'menu-banker')}
+              />
+              
+              <MenuItem
+                icon={<FileText className="w-5 h-5" />}
+                label="Min timeliste"
+                active={currentSection === 'timeliste'}
+                onClick={() => handleNavClick('timeliste', 'menu-timeliste')}
+              />
+              
+              <MenuItem
+                icon={<BookOpen className="w-5 h-5" />}
+                label="Vaktbok"
+                active={currentSection === 'vaktbok'}
+                onClick={() => handleNavClick('vaktbok', 'menu-vaktbok')}
+              />
+              
+              <MenuItem
+                icon={<Phone className="w-5 h-5" />}
+                label="Telefonliste"
+                active={currentSection === 'telefonliste'}
+                onClick={() => handleNavClick('telefonliste', 'menu-telefonliste')}
+              />
+              
+              <MenuItem
+                icon={<CheckSquare className="w-5 h-5" />}
+                label="Min tilgjengelighet"
+                active={currentSection === 'tilgjengelighet'}
+                onClick={() => handleNavClick('tilgjengelighet', 'menu-tilgjengelighet')}
+              />
+              
+              <MenuItem
+                icon={<MessageSquare className="w-5 h-5" />}
+                label="Forespørsler"
+                active={currentSection === 'requests'}
                 onClick={() => handleNavClick('requests', 'menu-requests')}
-                className={`w-full text-left px-4 py-3 rounded-lg flex items-center gap-3 transition-colors ${
-                  currentSection === 'requests' ? 'bg-blue-50 text-blue-700' : 'hover:bg-gray-50 text-gray-700'
-                }`}
-              >
-                <MessageSquare className="w-5 h-5" />
-                <span className="font-medium">Forespørsler</span>
-              </button>
+              />
               
-              <button
+              <MenuItem
+                icon={<Clock className="w-5 h-5" />}
+                label="Fleksitid"
+                active={currentSection === 'flextime'}
                 onClick={() => handleNavClick('flextime', 'menu-flextime')}
-                className={`w-full text-left px-4 py-3 rounded-lg flex items-center gap-3 transition-colors ${
-                  currentSection === 'flextime' ? 'bg-blue-50 text-blue-700' : 'hover:bg-gray-50 text-gray-700'
-                }`}
-              >
-                <Clock className="w-5 h-5" />
-                <span className="font-medium">Fleksitid</span>
-              </button>
+              />
               
-              <button
+              <MenuItem
+                icon={<User className="w-5 h-5" />}
+                label="Min Profil"
+                active={currentSection === 'profile'}
                 onClick={() => handleNavClick('profile', 'menu-profile')}
-                className={`w-full text-left px-4 py-3 rounded-lg flex items-center gap-3 transition-colors ${
-                  currentSection === 'profile' ? 'bg-blue-50 text-blue-700' : 'hover:bg-gray-50 text-gray-700'
-                }`}
-              >
-                <User className="w-5 h-5" />
-                <span className="font-medium">Min Profil</span>
-              </button>
+              />
             </div>
           </div>
         </div>
       )}
 
-      {/* Main Content - Changes based on currentSection */}
-      <div className="flex-1 overflow-y-auto p-4 bg-white">
-        {/* Home View */}
-        {currentSection === 'home' && (
-          <div className="space-y-3">
-            {/* Today's shift */}
-            <div className="bg-green-50 border border-green-200 rounded-lg p-3">
-              <div className="text-xs text-gray-600 mb-1">I dag</div>
-              <div className="font-semibold text-sm">DH (07:30-15:00)</div>
-              <div className="text-xs text-gray-500 mt-1">Kirurgisk avdeling</div>
-            </div>
-
-            {/* Tomorrow's shift */}
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
-              <div className="text-xs text-gray-600 mb-1">I morgen</div>
-              <div className="font-semibold text-sm">AH (15:00-23:00)</div>
-              <div className="text-xs text-gray-500 mt-1">Akuttmottak</div>
-            </div>
-
-            {/* Reminders */}
-            <div className="bg-amber-50 border border-amber-200 rounded-lg p-3">
-              <div className="flex items-center justify-between mb-1">
-                <div className="text-xs text-gray-600">Påminnelser</div>
-                <div className="bg-amber-600 text-white text-xs px-2 py-0.5 rounded-full">4</div>
-              </div>
-              <div className="text-sm font-medium">Nye meldinger</div>
-              <div className="text-xs text-gray-600 mt-1">Klikk for å se detaljer</div>
-            </div>
-
-            {/* Flextime */}
-            <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 text-center">
-              <div className="text-3xl font-bold text-gray-900">+7:18</div>
-              <div className="text-xs text-gray-600 mt-1">Fleksitid saldo</div>
-            </div>
-
-            {/* Quick actions */}
-            <button 
-              onClick={() => handleNavClick('requests', 'quick-action-request')}
-              className="w-full bg-blue-600 text-white py-3 rounded-lg font-medium text-sm flex items-center justify-center gap-2 mt-2 hover:bg-blue-700 transition-colors"
-            >
-              Ny forespørsel
-              <ChevronRight className="w-4 h-4" />
-            </button>
-          </div>
-        )}
-
-        {/* Calendar View */}
-        {currentSection === 'calendar' && (
-          <div>
-            {/* Month view */}
-            <div className="bg-white rounded-lg border border-gray-200 p-3 mb-4">
-              <div className="text-center mb-3 font-semibold">Desember 2024</div>
-              
-              <div className="grid grid-cols-7 gap-1 text-xs mb-1">
-                {['M', 'T', 'O', 'T', 'F', 'L', 'S'].map(day => (
-                  <div key={day} className="text-center font-semibold text-gray-600 py-1">
-                    {day}
-                  </div>
-                ))}
-              </div>
-              
-              <div className="grid grid-cols-7 gap-1 text-xs">
-                {Array.from({ length: 31 }, (_, i) => (
-                  <div 
-                    key={i} 
-                    className={`text-center py-2 rounded ${
-                      i === 26 
-                        ? 'bg-blue-600 text-white font-bold' 
-                        : i % 7 === 6 || i % 7 === 5
-                        ? 'bg-gray-50 text-gray-400'
-                        : 'hover:bg-gray-100'
-                    }`}
-                  >
-                    {i + 1}
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Today's schedule */}
-            <div className="space-y-2">
-              <div className="text-sm font-semibold text-gray-700">I dag - 27. desember</div>
-              <div className="bg-green-50 border-l-4 border-green-500 p-3 rounded">
-                <div className="font-semibold text-sm">Dagvakt</div>
-                <div className="text-xs text-gray-600">07:30 - 15:00</div>
-                <div className="text-xs text-gray-500 mt-1">Kirurgisk avdeling</div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Requests View */}
-        {currentSection === 'requests' && (
-          <div>
-            <div className="space-y-2 mb-4">
-              {/* Approved request */}
-              <div className="bg-green-50 border-l-4 border-green-500 p-3 rounded">
-                <div className="flex items-center justify-between mb-1">
-                  <div className="font-semibold text-sm">Ferie</div>
-                  <div className="text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded">Godkjent</div>
-                </div>
-                <div className="text-xs text-gray-600">10. juli - 24. august</div>
-                <div className="text-xs text-gray-500 mt-1">Sommerferie</div>
-              </div>
-
-              {/* Pending request */}
-              <div className="bg-white border-l-4 border-gray-300 p-3 rounded border border-gray-200">
-                <div className="flex items-center justify-between mb-1">
-                  <div className="font-semibold text-sm">Ekstravakt</div>
-                  <div className="text-xs bg-gray-100 text-gray-700 px-2 py-0.5 rounded">Ubehandlet</div>
-                </div>
-                <div className="text-xs text-gray-600">15. juli</div>
-                <div className="text-xs text-gray-500 mt-1">Venter på godkjenning</div>
-              </div>
-
-              {/* Rejected request */}
-              <div className="bg-red-50 border-l-4 border-red-500 p-3 rounded">
-                <div className="flex items-center justify-between mb-1">
-                  <div className="font-semibold text-sm">Vaktbytte</div>
-                  <div className="text-xs bg-red-100 text-red-800 px-2 py-0.5 rounded">Avvist</div>
-                </div>
-                <div className="text-xs text-gray-600">20. juli</div>
-                <div className="text-xs text-gray-500 mt-1">Ingen tilgjengelig</div>
-              </div>
-            </div>
-
-            <button className="w-full bg-blue-600 text-white py-3 rounded-lg font-medium text-sm hover:bg-blue-700 transition-colors">
-              + Ny forespørsel
-            </button>
-          </div>
-        )}
-
-        {/* Flextime View */}
-        {currentSection === 'flextime' && (
-          <div>
-            {/* Clock display */}
-            <div className="bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-200 rounded-lg p-6 text-center mb-4">
-              <div className="text-4xl font-bold text-gray-900 mb-1">15:42</div>
-              <div className="text-sm text-gray-600 mb-3">Klokken</div>
-              <div className="text-3xl font-bold text-blue-600 mb-1">+7:18</div>
-              <div className="text-xs text-gray-600">Din saldo</div>
-            </div>
-
-            {/* Punch buttons */}
-            <div className="grid grid-cols-2 gap-3 mb-4">
-              <button className="bg-green-600 hover:bg-green-700 text-white py-4 rounded-lg font-semibold flex flex-col items-center gap-1 transition-colors">
-                <Clock className="w-5 h-5" />
-                <span className="text-sm">Stemple inn</span>
-              </button>
-              <button className="bg-gray-300 hover:bg-gray-400 text-gray-700 py-4 rounded-lg font-semibold flex flex-col items-center gap-1 transition-colors">
-                <Clock className="w-5 h-5" />
-                <span className="text-sm">Stemple ut</span>
-              </button>
-            </div>
-
-            {/* Recent stamps */}
-            <div className="space-y-2">
-              <div className="text-sm font-semibold text-gray-700">Siste stemplinger</div>
-              <div className="bg-gray-50 border border-gray-200 rounded p-2 text-xs">
-                <div className="flex justify-between">
-                  <span>Inn</span>
-                  <span className="font-medium">07:28</span>
-                </div>
-              </div>
-              <div className="bg-gray-50 border border-gray-200 rounded p-2 text-xs">
-                <div className="flex justify-between">
-                  <span>Ut</span>
-                  <span className="font-medium">11:00</span>
-                </div>
-              </div>
-              <div className="bg-gray-50 border border-gray-200 rounded p-2 text-xs">
-                <div className="flex justify-between">
-                  <span>Inn</span>
-                  <span className="font-medium">11:30</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Profile View */}
-        {currentSection === 'profile' && (
-          <div>
-            {/* Profile header */}
-            <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg p-4 mb-4">
-              <div className="flex items-center gap-3">
-                <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center text-2xl font-bold">
-                  GH
-                </div>
-                <div>
-                  <div className="font-bold text-lg">Gunhild Horvli</div>
-                  <div className="text-sm text-blue-100">GUHV</div>
-                  <div className="text-xs text-blue-200">Kirurgisk avdeling</div>
-                </div>
-              </div>
-            </div>
-
-            {/* Profile details */}
-            <div className="space-y-2">
-              <div className="bg-gray-50 border border-gray-200 rounded-lg p-3">
-                <div className="text-xs text-gray-600 mb-1">E-post</div>
-                <div className="text-sm font-medium">gunhild.horvli@example.no</div>
-              </div>
-
-              <div className="bg-gray-50 border border-gray-200 rounded-lg p-3">
-                <div className="text-xs text-gray-600 mb-1">Telefon</div>
-                <div className="text-sm font-medium">+47 123 45 678</div>
-              </div>
-
-              <div className="bg-gray-50 border border-gray-200 rounded-lg p-3">
-                <div className="text-xs text-gray-600 mb-1">Stillingsprosent</div>
-                <div className="text-sm font-medium">100%</div>
-              </div>
-
-              <div className="bg-gray-50 border border-gray-200 rounded-lg p-3">
-                <div className="text-xs text-gray-600 mb-1">Ansiennitet</div>
-                <div className="text-sm font-medium">5 år, 3 måneder</div>
-              </div>
-            </div>
-          </div>
-        )}
+      {/* Main Content - Scrollable */}
+      <div className="flex-1 overflow-y-auto bg-white">
+        {currentSection === 'home' && <HomeSection onNavigate={handleNavClick} />}
+        {currentSection === 'calendar' && <CalendarSection />}
+        {currentSection === 'jatakk' && <JatakkSection />}
+        {currentSection === 'banker' && <BankerSection />}
+        {currentSection === 'timeliste' && <TimelisteSection />}
+        {currentSection === 'vaktbok' && <VaktbokSection />}
+        {currentSection === 'telefonliste' && <TelefonlisteSection />}
+        {currentSection === 'tilgjengelighet' && <TilgjengelighetSection />}
+        {currentSection === 'requests' && <RequestsSection />}
+        {currentSection === 'flextime' && <FlextimeSection />}
+        {currentSection === 'profile' && <ProfileSection />}
       </div>
 
-      {/* Bottom Navigation - Responsive */}
+      {/* Bottom Navigation */}
       <nav className="bg-white border-t border-gray-200 px-1 py-2 flex justify-around">
-        <button
+        <NavButton
+          icon={<Home className="w-5 h-5" />}
+          label="Hjem"
+          active={currentSection === 'home'}
           onClick={() => handleNavClick('home', 'nav-home')}
-          className={`flex flex-col items-center gap-1 py-1 px-2 rounded-lg transition-all ${
-            currentSection === 'home' 
-              ? 'text-blue-600 bg-blue-50' 
-              : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
-          } ${isHighlighted('nav-home') ? 'ring-2 ring-blue-400 ring-offset-2' : ''}`}
-        >
-          <Home className="w-5 h-5" />
-          <span className="text-xs font-medium">Hjem</span>
-        </button>
-
-        <button
+          isHighlighted={isHighlighted('nav-home')}
+        />
+        <NavButton
+          icon={<Calendar className="w-5 h-5" />}
+          label="Kalender"
+          active={currentSection === 'calendar'}
           onClick={() => handleNavClick('calendar', 'nav-calendar')}
-          className={`flex flex-col items-center gap-1 py-1 px-2 rounded-lg transition-all ${
-            currentSection === 'calendar' 
-              ? 'text-blue-600 bg-blue-50' 
-              : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
-          } ${isHighlighted('nav-calendar') ? 'ring-2 ring-blue-400 ring-offset-2' : ''}`}
-        >
-          <Calendar className="w-5 h-5" />
-          <span className="text-xs font-medium">Kalender</span>
-        </button>
-
-        <button
+          isHighlighted={isHighlighted('nav-calendar')}
+        />
+        <NavButton
+          icon={<MessageSquare className="w-5 h-5" />}
+          label="Forespørsler"
+          active={currentSection === 'requests'}
           onClick={() => handleNavClick('requests', 'nav-requests')}
-          className={`flex flex-col items-center gap-1 py-1 px-2 rounded-lg transition-all ${
-            currentSection === 'requests' 
-              ? 'text-blue-600 bg-blue-50' 
-              : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
-          } ${isHighlighted('nav-requests') ? 'ring-2 ring-blue-400 ring-offset-2' : ''}`}
-        >
-          <MessageSquare className="w-5 h-5" />
-          <span className="text-xs font-medium">Forespørsler</span>
-        </button>
-
-        <button
-          onClick={() => handleNavClick('flextime', 'nav-flextime')}
-          className={`flex flex-col items-center gap-1 py-1 px-2 rounded-lg transition-all ${
-            currentSection === 'flextime' 
-              ? 'text-blue-600 bg-blue-50' 
-              : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
-          } ${isHighlighted('nav-flextime') ? 'ring-2 ring-blue-400 ring-offset-2' : ''}`}
-        >
-          <Clock className="w-5 h-5" />
-          <span className="text-xs font-medium">Fleksitid</span>
-        </button>
-
-        <button
-          onClick={() => handleNavClick('profile', 'nav-profile')}
-          className={`flex flex-col items-center gap-1 py-1 px-2 rounded-lg transition-all ${
-            currentSection === 'profile' 
-              ? 'text-blue-600 bg-blue-50' 
-              : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
-          } ${isHighlighted('nav-profile') ? 'ring-2 ring-blue-400 ring-offset-2' : ''}`}
-        >
-          <User className="w-5 h-5" />
-          <span className="text-xs font-medium">Profil</span>
-        </button>
+          isHighlighted={isHighlighted('nav-requests')}
+        />
+        <NavButton
+          icon={<Menu className="w-5 h-5" />}
+          label="Meny"
+          active={false}
+          onClick={handleMenuClick}
+          isHighlighted={isHighlighted('nav-menu')}
+        />
       </nav>
     </div>
   );
 }
+
+// ============================================================================
+// SECTIONS
+// ============================================================================
+
+const HomeSection = ({ onNavigate }: { onNavigate: (id: string, el: string) => void }) => (
+  <div className="p-4 space-y-3">
+    {/* Today's shift */}
+    <div className="bg-green-50 border border-green-200 rounded-lg p-3">
+      <div className="text-xs text-gray-600 mb-1">I dag - 4. desember</div>
+      <div className="font-semibold text-sm">DH (07:30-15:00)</div>
+      <div className="text-xs text-gray-500 mt-1">Kirurgisk avdeling</div>
+    </div>
+
+    {/* Tomorrow's shift */}
+    <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+      <div className="text-xs text-gray-600 mb-1">I morgen - 5. desember</div>
+      <div className="font-semibold text-sm">AH (15:00-23:00)</div>
+      <div className="text-xs text-gray-500 mt-1">Akuttmottak</div>
+    </div>
+
+    {/* Reminders */}
+    <button 
+      onClick={() => onNavigate('requests', 'home-reminders')}
+      className="w-full bg-amber-50 border border-amber-200 rounded-lg p-3 text-left hover:bg-amber-100 transition-colors"
+    >
+      <div className="flex items-center justify-between mb-1">
+        <div className="text-xs text-gray-600">Påminnelser</div>
+        <div className="bg-amber-600 text-white text-xs px-2 py-0.5 rounded-full">4</div>
+      </div>
+      <div className="text-sm font-medium">Nye meldinger</div>
+      <div className="text-xs text-gray-600 mt-1">Klikk for å se detaljer</div>
+    </button>
+
+    {/* Flextime */}
+    <button 
+      onClick={() => onNavigate('flextime', 'home-flextime')}
+      className="w-full bg-gray-50 border border-gray-200 rounded-lg p-4 text-center hover:bg-gray-100 transition-colors"
+    >
+      <div className="text-3xl font-bold text-gray-900">+7:18</div>
+      <div className="text-xs text-gray-600 mt-1">Fleksitid saldo</div>
+    </button>
+
+    {/* Quick actions grid */}
+    <div className="grid grid-cols-2 gap-2">
+      <QuickActionCard
+        icon={<Bell className="w-5 h-5" />}
+        label="Ledige vakter"
+        onClick={() => onNavigate('jatakk', 'quick-jatakk')}
+      />
+      <QuickActionCard
+        icon={<Wallet className="w-5 h-5" />}
+        label="Mine banker"
+        onClick={() => onNavigate('banker', 'quick-banker')}
+      />
+      <QuickActionCard
+        icon={<BookOpen className="w-5 h-5" />}
+        label="Vaktbok"
+        onClick={() => onNavigate('vaktbok', 'quick-vaktbok')}
+      />
+      <QuickActionCard
+        icon={<Phone className="w-5 h-5" />}
+        label="Telefonliste"
+        onClick={() => onNavigate('telefonliste', 'quick-phone')}
+      />
+    </div>
+  </div>
+);
+
+const CalendarSection = () => {
+  const [selectedDate, setSelectedDate] = useState(4);
+  
+  return (
+    <div className="p-4">
+      {/* Month selector */}
+      <div className="flex items-center justify-between mb-4">
+        <button className="p-2 hover:bg-gray-100 rounded">&lt;</button>
+        <h2 className="font-semibold">Desember 2024</h2>
+        <button className="p-2 hover:bg-gray-100 rounded">&gt;</button>
+      </div>
+      
+      {/* Calendar grid */}
+      <div className="grid grid-cols-7 gap-1 mb-4">
+        {['M', 'T', 'O', 'T', 'F', 'L', 'S'].map(day => (
+          <div key={day} className="text-center text-xs font-semibold text-gray-600 p-1">
+            {day}
+          </div>
+        ))}
+        {Array.from({ length: 31 }, (_, i) => i + 1).map(day => (
+          <button
+            key={day}
+            onClick={() => setSelectedDate(day)}
+            className={`text-center p-2 text-sm rounded transition-colors ${
+              day === selectedDate
+                ? 'bg-blue-600 text-white font-semibold'
+                : day === 4
+                ? 'bg-green-100 text-green-800 font-semibold'
+                : 'hover:bg-gray-100'
+            }`}
+          >
+            {day}
+          </button>
+        ))}
+      </div>
+
+      {/* Selected day's shifts */}
+      <div>
+        <h3 className="font-semibold mb-2 text-sm">Vakter {selectedDate}. desember:</h3>
+        <div className="space-y-2">
+          <ShiftCard
+            date={`${selectedDate}. desember`}
+            shift="Dagvakt"
+            time="07:30-15:00"
+            department="Kirurgisk avdeling"
+            type="approved"
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const JatakkSection = () => (
+  <div className="p-4">
+    {/* Search */}
+    <div className="mb-4 relative">
+      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+      <input
+        type="text"
+        placeholder="Søk etter ledige vakter..."
+        className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm"
+      />
+    </div>
+
+    {/* Available shifts */}
+    <div className="space-y-3">
+      <AvailableShift
+        date="10. desember"
+        shift="Dagvakt"
+        time="07:30-15:00"
+        department="130302 - Ressursstyring"
+        deadline="8. des 14:00"
+      />
+      <AvailableShift
+        date="12. desember"
+        shift="Kveldsvakt"
+        time="15:00-22:30"
+        department="130302 - Ressursstyring"
+        deadline="10. des 14:00"
+      />
+      <AvailableShift
+        date="15. desember"
+        shift="Nattevakt"
+        time="22:30-07:30"
+        department="Akuttmottak"
+        deadline="13. des 14:00"
+      />
+    </div>
+  </div>
+);
+
+const BankerSection = () => (
+  <div className="p-4 space-y-3">
+    <BankCard
+      title="Feriebank"
+      balance="23.5 dager"
+      details="Opptjent i år: 5.5 dager"
+      color="blue"
+    />
+    <BankCard
+      title="Avspasering"
+      balance="14.2 timer"
+      details="Tilgjengelig nå"
+      color="green"
+    />
+    <BankCard
+      title="Vetobank"
+      balance="12 poeng"
+      details="Brukt: 3 av 15"
+      color="purple"
+    />
+    <BankCard
+      title="Kompbank"
+      balance="7.5 timer"
+      details="Opptjent overtid"
+      color="orange"
+    />
+  </div>
+);
+
+const TimelisteSection = () => (
+  <div className="p-4">
+    <div className="mb-4">
+      <h3 className="font-semibold mb-2">November 2024</h3>
+      <p className="text-sm text-gray-600">Venter på signering</p>
+    </div>
+
+    <div className="space-y-2">
+      <TimelistEntry
+        date="1. nov"
+        shift="DH"
+        hours="7.5"
+        signed={true}
+      />
+      <TimelistEntry
+        date="2. nov"
+        shift="AH"
+        hours="7.5"
+        signed={true}
+      />
+      <TimelistEntry
+        date="3. nov"
+        shift="DH"
+        hours="8.0"
+        signed={false}
+      />
+      <TimelistEntry
+        date="4. nov"
+        shift="Fri"
+        hours="-"
+        signed={true}
+      />
+    </div>
+
+    <button className="w-full mt-4 bg-green-600 text-white py-3 rounded-lg font-medium hover:bg-green-700 transition-colors">
+      Signer timeliste
+    </button>
+  </div>
+);
+
+const VaktbokSection = () => (
+  <div className="p-4">
+    <div className="mb-4">
+      <h3 className="font-semibold mb-2">På jobb i dag - 4. desember</h3>
+    </div>
+
+    <div className="space-y-2">
+      <StaffEntry
+        name="A.Test (Herslt)"
+        shift="D"
+        time="07:30-15:00"
+        department="130302"
+        isYou={false}
+      />
+      <StaffEntry
+        name="Falker, Ella"
+        shift="D"
+        time="07:30-15:00"
+        department="130302"
+        isYou={false}
+      />
+      <StaffEntry
+        name="Gunhild Horvli (test)"
+        shift="DH"
+        time="07:30-15:00"
+        department="130302"
+        isYou={true}
+      />
+      <StaffEntry
+        name="Mikkela, Gea"
+        shift="D"
+        time="07:30-15:00"
+        department="130302"
+        isYou={false}
+      />
+    </div>
+  </div>
+);
+
+const TelefonlisteSection = () => (
+  <div className="p-4">
+    {/* Search */}
+    <div className="mb-4 relative">
+      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+      <input
+        type="text"
+        placeholder="Søk etter navn..."
+        className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm"
+      />
+    </div>
+
+    <div className="space-y-2">
+      <ContactEntry
+        name="Bekkeli, Gra"
+        position="Sykepleier"
+        phone="97513429"
+        email="g.bekkeli@sykehus.no"
+      />
+      <ContactEntry
+        name="Falker, Ella"
+        position="Lege"
+        phone="94435811"
+        email="e.falker@sykehus.no"
+      />
+      <ContactEntry
+        name="Gunhild Horvli"
+        position="Administrator"
+        phone="98765432"
+        email="g.horvli@sykehus.no"
+        isYou={true}
+      />
+      <ContactEntry
+        name="Haugland"
+        position="Hjelpepleier"
+        phone="51513408"
+        email="haugland@sykehus.no"
+      />
+    </div>
+  </div>
+);
+
+const TilgjengelighetSection = () => (
+  <div className="p-4">
+    <div className="mb-4">
+      <h3 className="font-semibold mb-2">Registrer din tilgjengelighet</h3>
+      <p className="text-sm text-gray-600">
+        Marker dagene du er tilgjengelig eller utilgjengelig for ekstravakter
+      </p>
+    </div>
+
+    {/* Week view */}
+    <div className="space-y-2 mb-4">
+      <AvailabilityDay date="4. des (i dag)" available={true} />
+      <AvailabilityDay date="5. des" available={true} />
+      <AvailabilityDay date="6. des" available={false} />
+      <AvailabilityDay date="7. des" available={null} />
+      <AvailabilityDay date="8. des" available={null} />
+    </div>
+
+    <button className="w-full bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors">
+      + Legg til periode
+    </button>
+  </div>
+);
+
+const RequestsSection = () => (
+  <div className="p-4 space-y-3">
+    <RequestCard
+      type="Ferie"
+      date="5-6. desember"
+      status="approved"
+      reason="Godkjent ferie"
+    />
+    <RequestCard
+      type="Ekstravakt"
+      date="15. desember"
+      status="pending"
+      reason="Venter på godkjenning"
+    />
+    <RequestCard
+      type="Vaktbytte"
+      date="20. desember"
+      status="rejected"
+      reason="Ingen tilgjengelig"
+    />
+
+    <button className="w-full bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors">
+      + Ny forespørsel
+    </button>
+  </div>
+);
+
+const FlextimeSection = () => (
+  <div className="p-4">
+    {/* Clock display */}
+    <div className="bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-200 rounded-lg p-6 text-center mb-4">
+      <div className="text-4xl font-bold text-gray-900 mb-1">15:42</div>
+      <div className="text-sm text-gray-600 mb-3">Klokken</div>
+      <div className="text-3xl font-bold text-blue-600 mb-1">+7:18</div>
+      <div className="text-xs text-gray-600">Din saldo</div>
+    </div>
+
+    {/* Punch buttons */}
+    <div className="grid grid-cols-2 gap-3 mb-4">
+      <button className="bg-green-600 hover:bg-green-700 text-white py-4 rounded-lg font-semibold flex flex-col items-center gap-1 transition-colors">
+        <Clock className="w-5 h-5" />
+        <span className="text-sm">Stemple inn</span>
+      </button>
+      <button className="bg-red-600 hover:bg-red-700 text-white py-4 rounded-lg font-semibold flex flex-col items-center gap-1 transition-colors">
+        <Clock className="w-5 h-5" />
+        <span className="text-sm">Stemple ut</span>
+      </button>
+    </div>
+
+    {/* Recent stamps */}
+    <div className="space-y-2">
+      <div className="text-sm font-semibold text-gray-700">Siste stemplinger - 4. desember</div>
+      <div className="bg-gray-50 border border-gray-200 rounded p-3 text-sm">
+        <div className="flex justify-between mb-1">
+          <span className="text-gray-600">Inn</span>
+          <span className="font-medium">07:28</span>
+        </div>
+        <div className="flex justify-between mb-1">
+          <span className="text-gray-600">Ut</span>
+          <span className="font-medium">11:00</span>
+        </div>
+        <div className="flex justify-between">
+          <span className="text-gray-600">Inn</span>
+          <span className="font-medium">11:30</span>
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
+const ProfileSection = () => (
+  <div className="p-4">
+    {/* Profile header */}
+    <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg p-4 mb-4">
+      <div className="flex items-center gap-3">
+        <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center text-2xl font-bold">
+          GH
+        </div>
+        <div>
+          <div className="font-bold text-lg">Gunhild Horvli</div>
+          <div className="text-sm text-blue-100">GUHV</div>
+          <div className="text-xs text-blue-200">Kirurgisk avdeling</div>
+        </div>
+      </div>
+    </div>
+
+    {/* Profile details */}
+    <div className="space-y-2">
+      <ProfileDetail label="E-post" value="gunhild.horvli@sykehus.no" />
+      <ProfileDetail label="Telefon" value="+47 123 45 678" />
+      <ProfileDetail label="Stillingsprosent" value="100%" />
+      <ProfileDetail label="Ansiennitet" value="5 år, 3 måneder" />
+    </div>
+  </div>
+);
+
+// ============================================================================
+// HELPER COMPONENTS
+// ============================================================================
+
+const MenuItem = ({ icon, label, active, onClick }: {
+  icon: React.ReactNode;
+  label: string;
+  active: boolean;
+  onClick: () => void;
+}) => (
+  <button
+    onClick={onClick}
+    className={`w-full text-left px-4 py-3 rounded-lg flex items-center gap-3 transition-colors ${
+      active ? 'bg-blue-50 text-blue-700' : 'hover:bg-gray-50 text-gray-700'
+    }`}
+  >
+    {icon}
+    <span className="font-medium text-sm">{label}</span>
+  </button>
+);
+
+const NavButton = ({ icon, label, active, onClick, isHighlighted }: {
+  icon: React.ReactNode;
+  label: string;
+  active: boolean;
+  onClick: () => void;
+  isHighlighted: boolean;
+}) => (
+  <button
+    onClick={onClick}
+    className={`flex flex-col items-center gap-1 py-1 px-2 rounded-lg transition-all ${
+      active 
+        ? 'text-blue-600 bg-blue-50' 
+        : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+    } ${isHighlighted ? 'ring-2 ring-blue-400 ring-offset-2' : ''}`}
+  >
+    {icon}
+    <span className="text-xs font-medium">{label}</span>
+  </button>
+);
+
+const QuickActionCard = ({ icon, label, onClick }: {
+  icon: React.ReactNode;
+  label: string;
+  onClick: () => void;
+}) => (
+  <button
+    onClick={onClick}
+    className="bg-gray-50 border border-gray-200 rounded-lg p-4 hover:bg-gray-100 transition-colors flex flex-col items-center gap-2"
+  >
+    <div className="text-blue-600">{icon}</div>
+    <span className="text-xs font-medium text-gray-700">{label}</span>
+  </button>
+);
+
+const ShiftCard = ({ date, shift, time, department, type }: {
+  date: string;
+  shift: string;
+  time: string;
+  department: string;
+  type: 'approved' | 'pending';
+}) => {
+  const bgColor = type === 'approved' ? 'bg-green-50 border-green-200' : 'bg-yellow-50 border-yellow-200';
+  
+  return (
+    <div className={`border rounded-lg p-3 ${bgColor}`}>
+      <div className="text-xs text-gray-600 mb-1">{date}</div>
+      <div className="font-semibold text-sm">{shift} ({time})</div>
+      <div className="text-xs text-gray-500 mt-1">{department}</div>
+    </div>
+  );
+};
+
+const AvailableShift = ({ date, shift, time, department, deadline }: {
+  date: string;
+  shift: string;
+  time: string;
+  department: string;
+  deadline: string;
+}) => (
+  <div className="border border-gray-200 rounded-lg p-3 bg-white">
+    <div className="flex justify-between items-start mb-2">
+      <div className="flex-1">
+        <div className="font-semibold text-sm mb-1">{date} - {shift}</div>
+        <div className="text-xs text-gray-600">{time}</div>
+        <div className="text-xs text-gray-600">{department}</div>
+      </div>
+      <button className="px-3 py-1 bg-green-600 text-white text-xs rounded hover:bg-green-700 transition-colors">
+        Søk
+      </button>
+    </div>
+    <div className="text-xs text-red-600">Frist: {deadline}</div>
+  </div>
+);
+
+const BankCard = ({ title, balance, details, color }: {
+  title: string;
+  balance: string;
+  details: string;
+  color: 'blue' | 'green' | 'purple' | 'orange';
+}) => {
+  const colors = {
+    blue: 'from-blue-500 to-blue-600',
+    green: 'from-green-500 to-green-600',
+    purple: 'from-purple-500 to-purple-600',
+    orange: 'from-orange-500 to-orange-600'
+  };
+  
+  return (
+    <div className={`bg-gradient-to-r ${colors[color]} text-white rounded-lg p-4`}>
+      <div className="text-sm opacity-90 mb-1">{title}</div>
+      <div className="text-2xl font-bold mb-1">{balance}</div>
+      <div className="text-xs opacity-80">{details}</div>
+    </div>
+  );
+};
+
+const TimelistEntry = ({ date, shift, hours, signed }: {
+  date: string;
+  shift: string;
+  hours: string;
+  signed: boolean;
+}) => (
+  <div className="bg-gray-50 border border-gray-200 rounded p-3 flex items-center justify-between">
+    <div className="flex-1">
+      <div className="text-sm font-medium">{date}</div>
+      <div className="text-xs text-gray-600">{shift}</div>
+    </div>
+    <div className="text-sm font-medium mr-4">{hours}t</div>
+    {signed ? (
+      <CheckCircle className="w-5 h-5 text-green-600" />
+    ) : (
+      <XCircle className="w-5 h-5 text-gray-400" />
+    )}
+  </div>
+);
+
+const StaffEntry = ({ name, shift, time, department, isYou }: {
+  name: string;
+  shift: string;
+  time: string;
+  department: string;
+  isYou: boolean;
+}) => (
+  <div className={`border rounded-lg p-3 ${isYou ? 'bg-green-50 border-green-300' : 'bg-white border-gray-200'}`}>
+    <div className="flex justify-between items-start">
+      <div className="flex-1">
+        <div className={`text-sm font-medium ${isYou ? 'text-green-900' : ''}`}>{name}</div>
+        <div className="text-xs text-gray-600">{shift} ({time})</div>
+        <div className="text-xs text-gray-500">{department}</div>
+      </div>
+      {isYou && <div className="text-xs bg-green-600 text-white px-2 py-1 rounded">Du</div>}
+    </div>
+  </div>
+);
+
+const ContactEntry = ({ name, position, phone, email, isYou = false }: {
+  name: string;
+  position: string;
+  phone: string;
+  email: string;
+  isYou?: boolean;
+}) => (
+  <div className={`border rounded-lg p-3 ${isYou ? 'bg-green-50 border-green-300' : 'bg-white border-gray-200'}`}>
+    <div className="flex justify-between items-start mb-2">
+      <div className="flex-1">
+        <div className={`text-sm font-medium ${isYou ? 'text-green-900' : ''}`}>{name}</div>
+        <div className="text-xs text-gray-600">{position}</div>
+      </div>
+      {isYou && <div className="text-xs bg-green-600 text-white px-2 py-1 rounded">Du</div>}
+    </div>
+    <div className="flex items-center gap-4 text-xs">
+      <a href={`tel:${phone}`} className="text-blue-600 hover:underline">{phone}</a>
+      <a href={`mailto:${email}`} className="text-blue-600 hover:underline flex-1 truncate">{email}</a>
+    </div>
+  </div>
+);
+
+const AvailabilityDay = ({ date, available }: {
+  date: string;
+  available: boolean | null;
+}) => (
+  <div className={`border rounded-lg p-3 flex items-center justify-between ${
+    available === true ? 'bg-green-50 border-green-300' :
+    available === false ? 'bg-red-50 border-red-300' :
+    'bg-white border-gray-200'
+  }`}>
+    <div className="text-sm font-medium">{date}</div>
+    <div className="flex gap-2">
+      <button className={`px-3 py-1 rounded text-xs transition-colors ${
+        available === true ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+      }`}>
+        Tilgjengelig
+      </button>
+      <button className={`px-3 py-1 rounded text-xs transition-colors ${
+        available === false ? 'bg-red-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+      }`}>
+        Utilgjengelig
+      </button>
+    </div>
+  </div>
+);
+
+const RequestCard = ({ type, date, status, reason }: {
+  type: string;
+  date: string;
+  status: 'approved' | 'pending' | 'rejected';
+  reason: string;
+}) => {
+  const statusConfig = {
+    approved: { icon: CheckCircle, color: 'text-green-600', bg: 'bg-green-50 border-green-200', label: 'Godkjent' },
+    pending: { icon: AlertCircle, color: 'text-yellow-600', bg: 'bg-yellow-50 border-yellow-200', label: 'Venter' },
+    rejected: { icon: XCircle, color: 'text-red-600', bg: 'bg-red-50 border-red-200', label: 'Avslått' }
+  };
+  
+  const config = statusConfig[status];
+  const Icon = config.icon;
+  
+  return (
+    <div className={`border rounded-lg p-3 ${config.bg}`}>
+      <div className="flex items-start justify-between mb-2">
+        <div className="flex-1">
+          <div className="font-semibold text-sm">{type}</div>
+          <div className="text-xs text-gray-600 mt-1">{date}</div>
+        </div>
+        <div className={`flex items-center gap-1 ${config.color}`}>
+          <Icon className="w-4 h-4" />
+          <span className="text-xs font-medium">{config.label}</span>
+        </div>
+      </div>
+      <div className="text-xs text-gray-600">{reason}</div>
+    </div>
+  );
+};
+
+const ProfileDetail = ({ label, value }: { label: string; value: string }) => (
+  <div className="bg-gray-50 border border-gray-200 rounded-lg p-3">
+    <div className="text-xs text-gray-600 mb-1">{label}</div>
+    <div className="text-sm font-medium">{value}</div>
+  </div>
+);
+
+export default MinGatInterface;

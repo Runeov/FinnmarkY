@@ -40,8 +40,29 @@ const GuideLink = ({ guideId, children }: { guideId: string; children: React.Rea
 
 // Helper to render gatHelpData content as formatted React content
 const renderHelpTopicContent = (topic: HelpTopic): React.ReactNode => {
+  // Handle different content types - if content is a React element, return it directly
+  if (typeof topic.content !== 'string') {
+    return (
+      <div className="space-y-6">
+        {/* Header badge */}
+        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100 rounded-xl p-4">
+          <div className="flex items-center gap-2 text-blue-700">
+            <Info className="w-5 h-5" />
+            <span className="font-medium">Offisiell MinGat dokumentasjon</span>
+          </div>
+        </div>
+        
+        {/* Content */}
+        <div className="prose prose-blue max-w-none">
+          {topic.content}
+        </div>
+      </div>
+    );
+  }
+
   // Parse content into sections
-  const lines = topic.content.trim().split('\n');
+  const content = topic.content || '';
+  const lines = content.trim().split('\n');
   const elements: React.ReactNode[] = [];
   let currentSection: string[] = [];
   let sectionTitle = '';
