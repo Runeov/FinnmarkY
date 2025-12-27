@@ -3,8 +3,7 @@ import { Guide } from '@/lib/types';
 /**
  * Detailed guides for MinGat Home Access, Two-Factor Authentication, GatGo Mobile App,
  * and Microsoft Authenticator setup.
- * 
- * Guide 1: Setting Up Access from Home (MinGat Hjemmefra)
+ * * Guide 1: Setting Up Access from Home (MinGat Hjemmefra)
  * Guide 2: Logging In (Two-Factor Authentication)
  * Guide 3: Mobile App Setup (GatGo)
  * Guide 4: Microsoft Authenticator Setup (Comprehensive)
@@ -39,8 +38,7 @@ export const accessGuides: Guide[] = [
           type: 'warning',
           title: 'Viktig',
           content: 'Du må utføre Steg 1 fra en arbeidsstasjon på sykehuset. Uten dette vil ekstern pålogging feile.'
-        },
-        image: 'https://mingat.info/wp-content/uploads/2022/10/mingat-intro-1024x572.png'
+        }
       },
       {
         id: 'home-setup-step1',
@@ -58,7 +56,8 @@ export const accessGuides: Guide[] = [
           title: 'Hvorfor er dette nødvendig?',
           content: 'Mobilnummeret ditt er destinasjonen for engangskoder (SMS OTP). Hvis dette mangler eller er feil, vil ekstern pålogging mislykkes.'
         },
-        image: 'https://mingat.info/wp-content/uploads/2022/10/sms-perfil-1024x513.png'
+        // Using the SMS toggle image as a reference for profile settings
+        image: '/images/guides/profile-sms-toggle.png'
       },
       {
         id: 'home-setup-step2',
@@ -68,8 +67,7 @@ export const accessGuides: Guide[] = [
           type: 'info',
           title: 'Ventetid',
           content: 'Vent ca. 15 minutter før du prøver å logge inn hjemmefra. Synkroniseringen skjer automatisk.'
-        },
-        image: 'https://mingat.info/wp-content/uploads/2022/10/min-perfil-1024x611.png'
+        }
       },
       {
         id: 'home-setup-step3',
@@ -96,7 +94,7 @@ export const accessGuides: Guide[] = [
           title: 'Klar for hjemmetilgang!',
           content: 'Hvis du har fullført alle stegene over, er du klar til å logge inn på MinGat hjemmefra. Gå videre til påloggingsguiden.'
         },
-        image: 'https://mingat.info/wp-content/uploads/2022/10/login-home.png'
+        image: '/images/guides/login-screen.png'
       }
     ],
     relatedGuides: ['two-factor-login', 'microsoft-authenticator-setup'],
@@ -148,8 +146,7 @@ export const accessGuides: Guide[] = [
           type: 'warning',
           title: 'Viktig URL',
           content: 'https://mingat.helsenord.no — IKKE bruk interne snarveier eller bokmerker fra arbeidsPC-en din.'
-        },
-        image: 'https://mingat.info/wp-content/uploads/2022/10/palogging-minga-1024x418.png'
+        }
       },
       {
         id: '2fa-step2',
@@ -164,7 +161,7 @@ export const accessGuides: Guide[] = [
           title: 'Samme passord som på jobb',
           content: 'Du bruker nøyaktig samme brukernavn og passord som når du logger på datamaskinen på sykehuset.'
         },
-        image: 'https://mingat.info/wp-content/uploads/2022/10/glemt-password-mingat.png'
+        image: '/images/guides/login-screen.png'
       },
       {
         id: '2fa-step3',
@@ -179,7 +176,8 @@ export const accessGuides: Guide[] = [
           title: 'Anbefalt: Microsoft Authenticator',
           content: 'Authenticator-appen er raskere og mer pålitelig enn SMS. Se vår guide "Microsoft Authenticator oppsett" for å komme i gang.'
         },
-        image: 'https://mingat.info/wp-content/uploads/2022/10/password-recovery-mingat-1024x378.png'
+        // Showing the SMS toggle setting as context for 2FA setup
+        image: '/images/guides/profile-sms-toggle.png'
       },
       {
         id: '2fa-step4',
@@ -195,7 +193,7 @@ export const accessGuides: Guide[] = [
           title: 'Velg riktig foretak',
           content: 'Hvis du velger feil foretak, vil du se vakter og data for feil arbeidsgiver. Du må logge ut og inn igjen for å bytte.'
         },
-        image: 'https://mingat.info/wp-content/uploads/2022/10/Endre-niva-avdeling.png'
+        image: '/images/guides/department-switcher.png'
       },
       {
         id: '2fa-step5',
@@ -206,7 +204,7 @@ export const accessGuides: Guide[] = [
           title: 'Du er nå innlogget!',
           content: 'Du har full tilgang til MinGat. Sesjonen din varer vanligvis i flere timer, men du bør logge ut når du er ferdig.'
         },
-        image: 'https://mingat.info/wp-content/uploads/2022/10/mingat-oslo-1024x522.png'
+        image: '/images/guides/dashboard-overview.png'
       }
     ],
     relatedGuides: ['home-access-setup', 'microsoft-authenticator-setup', 'gatgo-mobile-setup'],
@@ -412,7 +410,8 @@ export const accessGuides: Guide[] = [
           'For å fjerne tilgjengelighet: Klikk på registreringen',
           'Trykk på linjen for å legge inn kommentar',
           'Leder kan se din tilgjengelighet ved behov for vikar'
-        ]
+        ],
+        image: '/images/guides/availability-planner.png'
       },
       // --- MENU: TELEFONLISTE ---
       {
@@ -454,7 +453,8 @@ export const accessGuides: Guide[] = [
           type: 'info',
           title: 'Hurtigsignering',
           content: 'Du kan også signere ved å holde på vakten og dra mot høyre. For å fjerne signering, dra mot venstre.'
-        }
+        },
+        image: '/images/guides/timesheet-signing.png'
       },
       // --- MENU: VAKTBOK ---
       {
@@ -817,7 +817,8 @@ export const accessGuides: Guide[] = [
           type: 'warning',
           title: 'JaTakk er et ønske',
           content: 'Å trykke JaTakk betyr ikke at du har fått vakten. Du melder kun interesse. Leder bestemmer hvem som får vakten.'
-        }
+        },
+        image: '/images/guides/new-request-menu.png'
       },
       {
         id: 'shift-swap',
@@ -843,7 +844,8 @@ export const accessGuides: Guide[] = [
           'MinGat: Klikk "Min kalender" i venstremenyen',
           'GatGo: Kalenderen vises på startsiden, sveip for å se flere dager',
           'Fargekoder viser vakttype (dag, kveld, natt, ferie, fravær)'
-        ]
+        ],
+        image: '/images/guides/calendar-month-view.png'
       }
     ],
     relatedGuides: ['gatgo-mobile-setup', 'two-factor-login'],
@@ -931,7 +933,8 @@ export const accessGuides: Guide[] = [
           type: 'success',
           title: 'Etter signering',
           content: 'Signerte timer sendes til leder for godkjenning. Du kan fjerne signeringen hvis du oppdager feil (før leder godkjenner).'
-        }
+        },
+        image: '/images/guides/timesheet-signing.png'
       },
       {
         id: 'troubleshoot-pay',
@@ -1104,7 +1107,8 @@ export const accessGuides: Guide[] = [
         subSteps: [
           'Brukernavn: Ditt Helse Nord brukernavn (vanligvis dine initialer, f.eks. "ABC")',
           'Passord: Samme passord som du bruker på jobb-PC-en'
-        ]
+        ],
+        image: '/images/guides/login-screen.png'
       },
       {
         id: 'login-step3',
@@ -1118,7 +1122,8 @@ export const accessGuides: Guide[] = [
           type: 'success',
           title: 'Anbefalt: Microsoft Authenticator',
           content: 'Authenticator-appen er raskere og mer pålitelig enn SMS, spesielt i områder med dårlig dekning.'
-        }
+        },
+        image: '/images/guides/profile-sms-toggle.png'
       },
       {
         id: 'login-step4',
@@ -1132,7 +1137,8 @@ export const accessGuides: Guide[] = [
           type: 'warning',
           title: 'Velg riktig',
           content: 'Velger du feil foretak, må du logge helt ut og inn igjen for å bytte.'
-        }
+        },
+        image: '/images/guides/department-switcher.png'
       },
       {
         id: 'login-forgot-pw',
@@ -1148,7 +1154,8 @@ export const accessGuides: Guide[] = [
           type: 'error',
           title: 'Låst ute hjemme?',
           content: 'Hvis passordet har utløpt mens du er hjemme, må du ringe 07022 for å få hjelp til å tilbakestille det.'
-        }
+        },
+        image: '/images/guides/forgot-password.png'
       }
     ],
     relatedGuides: ['home-access-setup', 'microsoft-authenticator-setup'],
@@ -1197,7 +1204,8 @@ export const accessGuides: Guide[] = [
           'Ledige vakter: Vakter du kan søke på via JaTakk',
           'Meldinger: Systemmeldinger eller beskjeder fra leder',
           'Mine apper: Snarvei til GatGo-oppsett'
-        ]
+        ],
+        image: '/images/guides/dashboard-overview.png'
       },
       {
         id: 'nav-main-menu',
@@ -1209,7 +1217,8 @@ export const accessGuides: Guide[] = [
           'Timeliste: Kontroller og signer timer for lønn',
           'Mine banker: Oversikt over fleksitid, ferie og avspasering',
           'Min profil: Personlig informasjon og innstillinger'
-        ]
+        ],
+        image: '/images/guides/main-menu-icons.png'
       },
       {
         id: 'nav-top-menu',
@@ -1236,7 +1245,8 @@ export const accessGuides: Guide[] = [
           type: 'warning',
           title: 'Ser du feil data?',
           content: 'Hvis du ser vakter eller timer for feil avdeling, sjekk at du har valgt riktig avdeling i velgeren øverst.'
-        }
+        },
+        image: '/images/guides/department-switcher.png'
       },
       {
         id: 'nav-calendar',
