@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { AppSidebar } from '../sidebar/AppSidebar';
 import { MinGatInterface } from '../mock/MinGatInterface';
+import { MinGatPCInterface } from '../mock/MinGatPCInterface';
 import { categories } from '@/data/categories';
 import { helpHierarchy } from '@/data/help-hierarchy';
 import { faqData, faqCategories, searchFAQ, FAQItem } from '@/data/faqData';
@@ -97,7 +98,23 @@ export function InteractiveGuidePage() {
   const [showSearchDropdown, setShowSearchDropdown] = useState(false);
   const { markAsViewed } = useGuideProgress();
 
+  // Scroll synchronization
+  const contentAreaRef = useRef<HTMLDivElement>(null);
+  const [currentSection, setCurrentSection] = useState<string>('');
+  const [highlightedElement, setHighlightedElement] = useState<string>('');
+  
+  // View mode toggle (mobile/desktop)
+  const [viewMode, setViewMode] = useState<'mobile' | 'desktop'>('mobile');
+
   const searchIndex = useMemo(() => buildSearchIndex(), []);
+
+  // Handle element click for tracking/analytics
+  const handleElementClick = useCallback((elementId: string) => {
+    console.log('Element clicked:', elementId);
+    setHighlightedElement(elementId);
+    // Auto-clear highlight after 2 seconds
+    setTimeout(() => setHighlightedElement(''), 2000);
+  }, []);
 
   // Handle navigation
   const handleNavigate = useCallback((guideId: string) => {
@@ -109,6 +126,21 @@ export function InteractiveGuidePage() {
     const contentArea = document.getElementById('guide-content-area');
     if (contentArea) {
       contentArea.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, []);
+
+  // Scroll to specific section when phone menu is clicked
+  const scrollToSection = useCallback((sectionId: string) => {
+    const element = document.getElementById(`section-${sectionId}`);
+    const contentArea = contentAreaRef.current;
+    
+    if (element && contentArea) {
+      const offsetTop = element.offsetTop - 100; // 100px margin from top
+      contentArea.scrollTo({
+        top: offsetTop,
+        behavior: 'smooth'
+      });
+      setCurrentSection(sectionId);
     }
   }, []);
 
@@ -371,6 +403,7 @@ export function InteractiveGuidePage() {
         <div className="flex-1 flex overflow-hidden">
           {/* Guide Content */}
           <div 
+            ref={contentAreaRef}
             id="guide-content-area"
             className="w-full xl:w-1/2 overflow-y-auto bg-white xl:border-r border-gray-200 shadow-inner"
           >
@@ -434,12 +467,58 @@ export function InteractiveGuidePage() {
           {/* Interactive Mock - Hidden on smaller screens */}
           <div className="hidden xl:flex w-1/2 bg-gray-50 flex-col relative">
             <div className="absolute top-4 right-4 z-10 bg-black/75 text-white px-3 py-1 rounded-full text-xs font-medium backdrop-blur-sm">
-              Interaktiv Demo
+              Interaktiv Demo {viewMode === 'mobile' ? '(Mobil)' : '(PC)'}{currentSection && ` · ${currentSection}`}
             </div>
-            <div className="flex-1 p-8 flex items-center justify-center overflow-hidden">
-              <div className="w-full max-w-md aspect-[9/16] md:aspect-auto md:h-[800px] md:w-[400px] bg-white rounded-[2rem] shadow-2xl overflow-hidden border-8 border-gray-800 ring-1 ring-gray-900/5">
-                <MinGatInterface />
+            
+            <div className="flex-1 px-8 py-8 flex flex-col items-center justify-center overflow-hidden">
+              {/* View Mode Toggle - Above the mock interface */}
+              <div className="flex justify-center mb-4">
+                <div className="flex items-center gap-1 bg-white rounded-lg p-1 shadow-md border border-gray-200">
+                  <button
+                    onClick={() => setViewMode('mobile')}
+                    className={`
+                      flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all
+                      ${viewMode === 'mobile'
+                        ? 'bg-blue-600 text-white shadow-sm'
+                        : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'}
+                    `}
+                    title="Mobilvisning (GatGo)"
+                  >
+                    <Smartphone className="w-5 h-5" />
+                    <span>Mobil</span>
+                  </button>
+                  <button
+                    onClick={() => setViewMode('desktop')}
+                    className={`
+                      flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all
+                      ${viewMode === 'desktop'
+                        ? 'bg-blue-600 text-white shadow-sm'
+                        : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'}
+                    `}
+                    title="PC-visning (MinGat)"
+                  >
+                    <Monitor className="w-5 h-5" />
+                    <span>PC</span>
+                  </button>
+                </div>
               </div>
+
+              {viewMode === 'mobile' ? (
+                /* Mobile Phone View */
+                <div className="w-full max-w-md aspect-[9/16] md:aspect-auto md:h-[800px] md:w-[400px] bg-white rounded-[2rem] shadow-2xl overflow-hidden border-8 border-gray-800 ring-1 ring-gray-900/5">
+                  <MinGatInterface 
+                    onNavigate={scrollToSection}
+                    currentSection={currentSection}
+                    onElementClick={handleElementClick}
+                    highlightedElement={highlightedElement}
+                  />
+                </div>
+              ) : (
+                /* Desktop PC View - 800px height (same as phone), full width with padding */
+                <div className="w-full max-w-5xl h-[800px] bg-white rounded-lg shadow-2xl overflow-hidden border border-gray-300">
+                  <MinGatPCInterface />
+                </div>
+              )}
             </div>
           </div>
         </div>

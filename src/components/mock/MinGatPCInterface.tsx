@@ -1,260 +1,354 @@
-'use client';
-
-import React, { useState } from 'react';
-import {
-  Menu, Bell, User, Calendar, Clock, Home, Settings, LogOut,
-  ChevronDown, Search, Printer, HelpCircle, Briefcase, FileText,
-  Users, AlertCircle, CheckCircle, Smartphone
+import React from 'react';
+import { 
+  Home, Calendar, BookOpen, ClipboardList, List, Clock, 
+  Building2, MessageSquare, Award, Users, FileText, Folder,
+  Menu, HelpCircle, Bell, User, MapPin, ChevronDown
 } from 'lucide-react';
 
-export function MinGatPCInterface() {
-  const [activeTab, setActiveTab] = useState('start');
+interface MinGatPCInterfaceProps {
+  className?: string;
+}
 
+export const MinGatPCInterface: React.FC<MinGatPCInterfaceProps> = ({ className = '' }) => {
   return (
-    <div
-      className="w-full h-full bg-[#f0f2f5] flex flex-col font-sans text-sm text-gray-800 border border-gray-300 shadow-2xl rounded-lg overflow-hidden"
-      id="mcp-mingat-pc-container"
-    >
-      {/* 1. HEADER (Top Bar) */}
-      <header
-        className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 flex-shrink-0"
+    <div className={`flex flex-col h-full bg-gray-50 ${className}`} id="mcp-mingat-pc-root">
+      {/* Top Horizontal Menu Bar */}
+      <header 
+        className="bg-gradient-to-r from-red-600 to-red-700 text-white px-4 py-3 flex items-center justify-between shadow-md"
         id="mcp-mingat-header"
       >
-        {/* Left: Logo/Title */}
         <div className="flex items-center gap-4">
-          <div className="text-2xl font-bold text-[#005077] tracking-tight flex items-center gap-2">
-            <span>MinGat</span>
-            <span className="text-xs font-normal text-gray-500 bg-gray-100 px-2 py-0.5 rounded-full border border-gray-200">v.2024.1</span>
-          </div>
+          {/* Logo/Home */}
+          <button className="flex items-center gap-2 hover:bg-red-700/50 px-3 py-2 rounded">
+            <Home className="w-5 h-5" />
+            <span className="font-semibold text-lg" id="mcp-mingat-logo">MinGat</span>
+          </button>
+
+          {/* Dropdown Menu */}
+          <button 
+            className="flex items-center gap-2 hover:bg-red-700/50 px-3 py-2 rounded"
+            id="mcp-mingat-main-menu"
+          >
+            <Menu className="w-5 h-5" />
+            <span>Meny</span>
+            <ChevronDown className="w-4 h-4" />
+          </button>
+
+          {/* Version */}
+          <span className="text-sm opacity-90" id="mcp-mingat-version">v 6.0.1.23929</span>
         </div>
 
-        {/* Center: Search/Level (Nivå) */}
-        <div className="flex-1 max-w-xl mx-8 hidden md:flex items-center gap-2">
-          <div className="relative w-full">
-            <input
-              type="text"
-              placeholder="Søk etter ansatt eller funksjon..."
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#005077] focus:border-transparent text-sm"
-              id="mcp-header-search"
-            />
-            <Search className="w-4 h-4 text-gray-400 absolute left-3 top-2.5" />
-          </div>
-          <div className="flex items-center gap-1 bg-gray-50 border border-gray-200 px-3 py-2 rounded-md whitespace-nowrap text-xs font-medium cursor-pointer hover:bg-gray-100" id="mcp-level-selector">
-            <Briefcase className="w-4 h-4 text-gray-500" />
-            <span>Medisinsk Avd. A</span>
-            <ChevronDown className="w-3 h-3 text-gray-400" />
-          </div>
-        </div>
-
-        {/* Right: User & Tools */}
         <div className="flex items-center gap-4">
-          <button className="text-gray-500 hover:text-[#005077]" title="Hjelp" id="mcp-header-help">
+          {/* Department/Level Selector */}
+          <button 
+            className="flex items-center gap-2 hover:bg-red-700/50 px-3 py-2 rounded"
+            id="mcp-mingat-department"
+          >
+            <MapPin className="w-4 h-4" />
+            <span className="text-sm">130302 - Seksjon for ressursstyring</span>
+            <ChevronDown className="w-4 h-4" />
+          </button>
+
+          {/* User Name */}
+          <button 
+            className="flex items-center gap-2 hover:bg-red-700/50 px-3 py-2 rounded"
+            id="mcp-mingat-user"
+          >
+            <User className="w-4 h-4" />
+            <span className="text-sm">Gunhild Horvli (test) (GUHV)</span>
+          </button>
+
+          {/* Help */}
+          <button 
+            className="hover:bg-red-700/50 p-2 rounded"
+            id="mcp-mingat-help-button"
+          >
             <HelpCircle className="w-5 h-5" />
           </button>
-          <button className="text-gray-500 hover:text-[#005077]" title="Utskrift" id="mcp-header-print">
-            <Printer className="w-5 h-5" />
-          </button>
-          <div className="h-6 w-px bg-gray-200 mx-1"></div>
-          <div className="flex items-center gap-3 cursor-pointer group" id="mcp-user-profile">
-            <div className="text-right hidden sm:block">
-              <p className="font-semibold text-sm leading-tight text-gray-700 group-hover:text-[#005077]">Navn Navnesen</p>
-              <p className="text-xs text-gray-500">Sykepleier</p>
-            </div>
-            <div className="w-9 h-9 bg-[#005077] text-white rounded-full flex items-center justify-center font-bold shadow-sm">
-              NN
-            </div>
-          </div>
         </div>
       </header>
 
-      {/* 2. NAVIGATION BAR (Main Menu) */}
-      <nav
-        className="bg-[#005077] text-white px-6 shadow-md flex-shrink-0"
-        id="mcp-mingat-nav"
-      >
-        <ul className="flex items-center gap-1 overflow-x-auto">
-          {[
-            { id: 'start', label: 'Startsiden', icon: Home },
-            { id: 'calendar', label: 'Min Kalender', icon: Calendar },
-            { id: 'requests', label: 'Forespørsler', icon: FileText },
-            { id: 'timelog', label: 'Min Timeliste', icon: Clock },
-            { id: 'department', label: 'Vaktbok', icon: Users },
-            { id: 'settings', label: 'Min Profil', icon: Settings },
-          ].map((item) => (
-            <li key={item.id}>
-              <button
-                onClick={() => setActiveTab(item.id)}
-                className={`
-                  flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-4 transition-colors
-                  ${activeTab === item.id
-                    ? 'border-white text-white bg-white/10'
-                    : 'border-transparent text-blue-100 hover:bg-white/5 hover:text-white'}
-                `}
-                id={`mcp-menu-${item.id}`}
-              >
-                <item.icon className="w-4 h-4" />
-                {item.label}
-              </button>
-            </li>
-          ))}
-        </ul>
-      </nav>
+      {/* Main Content Area with Sidebar */}
+      <div className="flex flex-1 overflow-hidden">
+        {/* Left Vertical Sidebar */}
+        <aside 
+          className="w-16 bg-gray-700 text-white flex flex-col items-center py-4 gap-2"
+          id="mcp-mingat-sidebar"
+        >
+          <SidebarIcon icon={<Home />} label="Startsiden" active={true} id="mcp-sidebar-home" />
+          <SidebarIcon icon={<Calendar />} label="Min kalender" id="mcp-sidebar-calendar" />
+          <SidebarIcon icon={<BookOpen />} label="Vaktbok" id="mcp-sidebar-vaktbok" />
+          <SidebarIcon icon={<ClipboardList />} label="Oppgaver" id="mcp-sidebar-oppgaver" />
+          <SidebarIcon icon={<List />} label="Ukeliste" id="mcp-sidebar-ukeliste" />
+          <SidebarIcon icon={<Clock />} label="Fleksitid" id="mcp-sidebar-fleksitid" />
+          <SidebarIcon icon={<Building2 />} label="Mine banker" id="mcp-sidebar-banker" />
+          <SidebarIcon icon={<MessageSquare />} label="Forespørsler" badge={3} id="mcp-sidebar-foresporsler" />
+          <SidebarIcon icon={<Award />} label="Kompetanse" id="mcp-sidebar-kompetanse" />
+        </aside>
 
-      {/* 3. CONTENT AREA */}
-      <main className="flex-1 p-6 overflow-y-auto bg-[#f0f2f5]" id="mcp-main-content">
+        {/* Main Dashboard Content */}
+        <main className="flex-1 overflow-y-auto bg-white" id="mcp-mingat-main-content">
+          {/* Page Title */}
+          <div className="bg-gray-100 border-b px-6 py-3">
+            <h1 className="text-xl font-semibold text-gray-800" id="mcp-mingat-page-title">Startsiden</h1>
+          </div>
 
-        {activeTab === 'start' && (
-          <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-
-            {/* Widget: Mine Vakter (Today/Tomorrow) */}
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden col-span-1 lg:col-span-2" id="mcp-widget-shifts">
-              <div className="bg-gray-50 px-4 py-3 border-b border-gray-200 flex justify-between items-center">
-                <h3 className="font-semibold text-gray-700">Mine vakter</h3>
-                <span className="text-xs text-gray-500">Uke 42</span>
+          {/* Dashboard Grid */}
+          <div className="p-6 grid grid-cols-3 gap-4" id="mcp-mingat-dashboard-grid">
+            {/* Widget: I dag og i morgen */}
+            <DashboardWidget
+              title="I dag og i morgen"
+              id="mcp-widget-today-tomorrow"
+              footerLink="GÅ TIL KALENDER"
+            >
+              <div className="space-y-2">
+                <ShiftCard
+                  date="JUL 4"
+                  day="Fredag"
+                  type="Vakt / oppgave"
+                  time="DH"
+                  period="07:30-15:00 - 130302 - 130302"
+                  variant="green"
+                />
+                <div className="text-sm text-gray-600 py-2">Du har ingen vakter eller oppgaver i morgen!</div>
               </div>
-              <div className="p-4 flex flex-col sm:flex-row gap-4">
-                <div className="flex-1 bg-blue-50 border border-blue-100 rounded p-3">
-                  <span className="text-xs font-bold text-blue-600 uppercase tracking-wide">I dag</span>
-                  <div className="flex justify-between items-end mt-1">
-                    <div>
-                      <p className="font-bold text-gray-800">07:30 - 15:00</p>
-                      <p className="text-sm text-gray-600">Dagvakt, Medisinsk A</p>
-                    </div>
-                    <div className="h-2 w-2 bg-green-500 rounded-full" title="På jobb"></div>
-                  </div>
-                </div>
-                <div className="flex-1 bg-gray-50 border border-gray-200 rounded p-3 opacity-60">
-                  <span className="text-xs font-bold text-gray-500 uppercase tracking-wide">I morgen</span>
-                  <div className="mt-1">
-                    <p className="font-bold text-gray-800">14:45 - 22:15</p>
-                    <p className="text-sm text-gray-600">Aftenvakt, Medisinsk A</p>
-                  </div>
-                </div>
-              </div>
-            </div>
+            </DashboardWidget>
 
             {/* Widget: Påminnelser */}
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden" id="mcp-widget-reminders">
-              <div className="bg-yellow-50 px-4 py-3 border-b border-yellow-100 flex justify-between items-center">
-                <h3 className="font-semibold text-yellow-800 flex items-center gap-2">
-                  <Bell className="w-4 h-4" /> Påminnelser
-                </h3>
-                <span className="bg-yellow-200 text-yellow-800 text-xs font-bold px-2 py-0.5 rounded-full">2</span>
+            <DashboardWidget
+              title="Påminnelser"
+              badge={4}
+              id="mcp-widget-reminders"
+              footerLink="GÅ TIL PÅMINNELSER"
+            >
+              <div className="text-sm text-gray-600">
+                Viser ulike viktige meldinger her viser meldinger som er lagt ut av systemansvarlig. Viktig at du alltid leser disse!
               </div>
-              <div className="divide-y divide-gray-100">
-                <div className="p-3 hover:bg-gray-50 cursor-pointer">
-                  <p className="text-sm font-medium text-gray-800">Timeliste ikke signert</p>
-                  <p className="text-xs text-gray-500 mt-0.5">Uke 41 mangler godkjenning</p>
-                </div>
-                <div className="p-3 hover:bg-gray-50 cursor-pointer">
-                  <p className="text-sm font-medium text-gray-800">Ny arbeidsplan</p>
-                  <p className="text-xs text-gray-500 mt-0.5">Høst 2024 er publisert</p>
-                </div>
-              </div>
-            </div>
+            </DashboardWidget>
 
-            {/* Widget: Mine Apper / GatGo */}
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden" id="mcp-widget-apps">
-              <div className="bg-gray-50 px-4 py-3 border-b border-gray-200">
-                <h3 className="font-semibold text-gray-700">Mine Apper</h3>
+            {/* Widget: Uleste forespørsler */}
+            <DashboardWidget
+              title="Uleste forespørsler"
+              id="mcp-widget-unread-requests"
+              footerLink="GÅ TIL FORESPØRSLER"
+            >
+              <div className="text-sm text-gray-600">
+                Du har ingen uleste forespørsler!
               </div>
-              <div className="p-4 flex items-center gap-4">
-                <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center text-green-600">
-                  <Smartphone className="w-6 h-6" />
-                </div>
-                <div className="flex-1">
-                  <h4 className="font-medium text-gray-900">GatGo</h4>
-                  <p className="text-xs text-gray-500 mb-2">Mobil tilgang til vaktbok</p>
-                  <button className="text-xs bg-[#005077] text-white px-3 py-1.5 rounded hover:bg-[#003d5c] transition-colors">
-                    Vis oppsettkode
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            {/* Widget: Ledige vakter */}
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden lg:col-span-2" id="mcp-widget-vacant">
-              <div className="bg-gray-50 px-4 py-3 border-b border-gray-200 flex justify-between items-center">
-                <h3 className="font-semibold text-gray-700">Ledige vakter (JaTakk)</h3>
-                <button className="text-xs text-blue-600 hover:underline">Se alle</button>
-              </div>
-              <table className="w-full text-sm">
-                <thead className="bg-gray-50 text-gray-500 text-xs text-left">
-                  <tr>
-                    <th className="px-4 py-2 font-medium">Dato</th>
-                    <th className="px-4 py-2 font-medium">Vakt</th>
-                    <th className="px-4 py-2 font-medium">Avdeling</th>
-                    <th className="px-4 py-2 font-medium"></th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-100">
-                  <tr>
-                    <td className="px-4 py-3">Lør 17.02</td>
-                    <td className="px-4 py-3"><span className="bg-orange-100 text-orange-800 px-2 py-0.5 rounded text-xs font-medium">Aften</span></td>
-                    <td className="px-4 py-3 text-gray-600">Medisinsk A</td>
-                    <td className="px-4 py-3 text-right"><button className="text-blue-600 hover:underline text-xs font-medium">Søk</button></td>
-                  </tr>
-                  <tr>
-                    <td className="px-4 py-3">Søn 18.02</td>
-                    <td className="px-4 py-3"><span className="bg-blue-100 text-blue-800 px-2 py-0.5 rounded text-xs font-medium">Dag</span></td>
-                    <td className="px-4 py-3 text-gray-600">Medisinsk A</td>
-                    <td className="px-4 py-3 text-right"><button className="text-blue-600 hover:underline text-xs font-medium">Søk</button></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+            </DashboardWidget>
 
             {/* Widget: Fleksitid */}
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden" id="mcp-widget-flex">
-              <div className="bg-gray-50 px-4 py-3 border-b border-gray-200">
-                <h3 className="font-semibold text-gray-700">Min Fleksitid</h3>
-              </div>
-              <div className="p-4 text-center">
-                <div className="text-3xl font-bold text-gray-800 mb-1">+ 12:30</div>
-                <p className="text-xs text-gray-500 mb-4">Saldo pr. i dag</p>
-                <div className="grid grid-cols-2 gap-2">
-                  <button className="bg-green-600 hover:bg-green-700 text-white text-xs py-2 rounded font-medium">
-                    Stemple inn
+            <DashboardWidget
+              title="Fleksitid"
+              id="mcp-widget-flextime"
+              footerLink="GÅ TIL FLEKSITID"
+            >
+              <div className="flex flex-col items-center justify-center py-4">
+                <div className="text-4xl font-bold text-gray-800" id="mcp-flextime-clock">08:13</div>
+                <div className="text-xs text-gray-500 mt-1">SALDO: -257.52M</div>
+                <div className="flex gap-2 mt-4">
+                  <button className="px-4 py-2 bg-green-600 text-white text-sm rounded hover:bg-green-700">
+                    Inn
                   </button>
-                  <button className="bg-red-600 hover:bg-red-700 text-white text-xs py-2 rounded font-medium">
-                    Stemple ut
+                  <button className="px-4 py-2 bg-gray-300 text-gray-700 text-sm rounded hover:bg-gray-400">
+                    Ut
                   </button>
                 </div>
               </div>
-            </div>
+            </DashboardWidget>
 
+            {/* Widget: På jobb i dag */}
+            <DashboardWidget
+              title="På jobb i dag"
+              id="mcp-widget-on-duty"
+              footerLink="GÅ TIL VAKTBOK"
+            >
+              <div className="space-y-1 text-sm">
+                <div className="flex justify-between border-b pb-1">
+                  <span className="font-semibold">Navn</span>
+                  <span className="font-semibold">Vakt</span>
+                </div>
+                <div className="flex justify-between py-1 hover:bg-gray-50">
+                  <span>A.Test (Herslt), Ea...</span>
+                  <span className="text-gray-600">D (07:30-15:00)</span>
+                </div>
+                <div className="flex justify-between py-1 hover:bg-gray-50">
+                  <span>Falker (Herslt), Ella...</span>
+                  <span className="text-gray-600">D (07:30-15:00)</span>
+                </div>
+                <div className="flex justify-between py-1 hover:bg-gray-50">
+                  <span>Mikkela (Herslt), Gea...</span>
+                  <span className="text-gray-600">D (07:30-15:00)</span>
+                </div>
+              </div>
+            </DashboardWidget>
+
+            {/* Widget: Ledige vakter */}
+            <DashboardWidget
+              title="Ledige vakter"
+              id="mcp-widget-available-shifts"
+              footerLink="GÅ TIL JATAKK"
+            >
+              <div className="text-sm text-gray-600">
+                <div className="font-semibold mb-2">11672</div>
+                <div className="text-xs">Ledige vikarvakter til søknadsfrist til nå</div>
+                <div className="mt-2 text-xs">
+                  <div>146338 - Felles informasjon</div>
+                  <div className="text-gray-500">2 ledige vakter</div>
+                </div>
+              </div>
+            </DashboardWidget>
+
+            {/* Widget: Telefonliste */}
+            <DashboardWidget
+              title="Telefonliste"
+              id="mcp-widget-phone-list"
+              footerLink="GÅ TIL NAVNELISTE"
+            >
+              <div className="space-y-1 text-sm">
+                <div className="flex justify-between border-b pb-1">
+                  <span className="font-semibold">Navn</span>
+                  <span className="font-semibold">Telefon</span>
+                </div>
+                <div className="flex justify-between py-1">
+                  <span>Bekkeli (Herslt), Gra...</span>
+                  <span className="text-gray-600">97513429</span>
+                </div>
+                <div className="flex justify-between py-1">
+                  <span>Falker (Herslt), Ella...</span>
+                  <span className="text-gray-600">94435811</span>
+                </div>
+                <div className="flex justify-between py-1">
+                  <span>Haugland (Herslt)</span>
+                  <span className="text-gray-600">51513408</span>
+                </div>
+              </div>
+            </DashboardWidget>
           </div>
-        )}
-
-        {activeTab !== 'start' && (
-          <div className="flex flex-col items-center justify-center h-full text-gray-400 bg-white rounded-lg border border-gray-200 border-dashed">
-            <div className="bg-gray-50 p-6 rounded-full mb-4">
-              {activeTab === 'calendar' && <Calendar className="w-12 h-12" />}
-              {activeTab === 'requests' && <FileText className="w-12 h-12" />}
-              {activeTab === 'timelog' && <Clock className="w-12 h-12" />}
-              {activeTab === 'department' && <Users className="w-12 h-12" />}
-              {activeTab === 'settings' && <Settings className="w-12 h-12" />}
-            </div>
-            <h3 className="text-lg font-medium text-gray-600 mb-1">
-              {activeTab === 'calendar' ? 'Min Kalender' :
-               activeTab === 'requests' ? 'Mine Forespørsler' :
-               activeTab === 'timelog' ? 'Timeliste' :
-               activeTab === 'department' ? 'Vaktbok' : 'Innstillinger'}
-            </h3>
-            <p className="text-sm">Denne visningen er en demo.</p>
-          </div>
-        )}
-
-      </main>
-
-      {/* 4. FOOTER */}
-      <footer className="bg-gray-100 border-t border-gray-200 px-6 py-2 text-xs text-gray-500 flex justify-between items-center flex-shrink-0">
-        <div>&copy; 2024 Visma Enterprise AS</div>
-        <div className="flex gap-4">
-          <span>Personvern</span>
-          <span>Informasjonskapsler</span>
-        </div>
-      </footer>
+        </main>
+      </div>
     </div>
   );
+};
+
+// Helper Components
+
+interface SidebarIconProps {
+  icon: React.ReactNode;
+  label: string;
+  active?: boolean;
+  badge?: number;
+  id?: string;
 }
+
+const SidebarIcon: React.FC<SidebarIconProps> = ({ icon, label, active, badge, id }) => {
+  return (
+    <button
+      id={id}
+      className={`relative w-12 h-12 flex items-center justify-center rounded transition-colors ${
+        active 
+          ? 'bg-gray-600 text-white' 
+          : 'text-gray-300 hover:bg-gray-600 hover:text-white'
+      }`}
+      title={label}
+    >
+      {icon}
+      {badge && (
+        <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+          {badge}
+        </span>
+      )}
+    </button>
+  );
+};
+
+interface DashboardWidgetProps {
+  title: string;
+  children: React.ReactNode;
+  footerLink?: string;
+  badge?: number;
+  id?: string;
+}
+
+const DashboardWidget: React.FC<DashboardWidgetProps> = ({ 
+  title, 
+  children, 
+  footerLink,
+  badge,
+  id 
+}) => {
+  return (
+    <div 
+      id={id}
+      className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden flex flex-col"
+    >
+      {/* Widget Header */}
+      <div className="bg-gray-50 border-b px-4 py-2 flex items-center justify-between">
+        <h3 className="font-semibold text-gray-700 text-sm">{title}</h3>
+        {badge && (
+          <span className="bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+            {badge}
+          </span>
+        )}
+      </div>
+
+      {/* Widget Content */}
+      <div className="p-4 flex-1 overflow-y-auto">
+        {children}
+      </div>
+
+      {/* Widget Footer */}
+      {footerLink && (
+        <div className="border-t bg-gray-50 px-4 py-2">
+          <button className="text-xs text-blue-600 hover:text-blue-800 font-semibold flex items-center gap-1">
+            <span>{footerLink}</span>
+            <ChevronDown className="w-3 h-3 rotate-270" />
+          </button>
+        </div>
+      )}
+    </div>
+  );
+};
+
+interface ShiftCardProps {
+  date: string;
+  day: string;
+  type: string;
+  time: string;
+  period: string;
+  variant?: 'green' | 'blue' | 'default';
+}
+
+const ShiftCard: React.FC<ShiftCardProps> = ({ 
+  date, 
+  day, 
+  type, 
+  time, 
+  period, 
+  variant = 'default' 
+}) => {
+  const bgColor = {
+    green: 'bg-green-100 border-green-300',
+    blue: 'bg-blue-100 border-blue-300',
+    default: 'bg-gray-100 border-gray-300'
+  }[variant];
+
+  return (
+    <div className={`border rounded p-3 ${bgColor}`}>
+      <div className="flex items-start gap-3">
+        <div className="text-center">
+          <div className="text-red-600 text-xs font-semibold">{date.split(' ')[0]}</div>
+          <div className="text-2xl font-bold text-red-600">{date.split(' ')[1]}</div>
+          <div className="text-xs text-gray-600">{day}</div>
+        </div>
+        <div className="flex-1">
+          <div className="text-sm font-semibold text-gray-800">{type}</div>
+          <div className="text-sm text-gray-600">{time}</div>
+          <div className="text-xs text-gray-500 mt-1">{period}</div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default MinGatPCInterface;
