@@ -18,12 +18,10 @@ export const gatHelpData: HelpTopic[] = [
       {
         id: "innlogging",
         title: "Innlogging",
-        content: `Innlogging`
-
+        content: `Innlogging
 
 Kommentar:
-Legg inne eventuelle tilleggsopplysninger.
-        `
+Legg inne eventuelle tilleggsopplysninger.`
       },
       {
         id: "bankveksling",
